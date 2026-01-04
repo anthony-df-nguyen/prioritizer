@@ -111,15 +111,16 @@ export function EditScaleForm({
       for (const option of optionsToDelete) {
         await window.api.scoringScaleOption.delete({
           id: option.id,
-          activeProjectId,
+          projectId: activeProjectId,
         });
+         refreshItems();
       }
       // Update existing options
       for (const option of existingOptions) {
         // Find the original option to compare values
         await window.api.scoringScaleOption.update({
-          ...option, // { id, label?, value?, ... }
-          projectId: activeProjectId, // <-- add this
+          ...option, 
+          projectId: activeProjectId,
         });
         refreshItems();
       }

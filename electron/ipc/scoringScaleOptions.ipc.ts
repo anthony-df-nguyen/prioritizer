@@ -44,7 +44,7 @@ export function registerScoringScaleOptionsIPC() {
     createIpcHandler({
       schema: ScoringScaleOptionsDeleteSchema,
       handler: async (_event, input) => {
-        return optionsRepo.deleteScoringScaleOption(input);
+        return optionsRepo.deleteScoringScaleOption(input, input.projectId);
       },
     })
   );

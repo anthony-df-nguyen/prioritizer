@@ -83,13 +83,25 @@ export async function updateScoringScaleOption(
 
   return option;
 }
+export async function deleteScoringScaleOption(
+  input: { id: string },
+  projectId?: string
+): Promise<ScoringScaleOption> {
+  // 1️⃣ Mark dependent scores as orphaned (value & optionId → null)
+  await db
+    .update(itemDriverScores)
+    .set({ scoringScaleOptionId: null, value: null })
+    .where(eq(itemDriverScores.scoringScaleOptionId, input.id));
 
-export async function deleteScoringScaleOption(input: {
-  id: string;
-}): Promise<ScoringScaleOption> {
+  // 2️⃣ Delete the option itself
   const [option] = await db
     .delete(scoringScaleOptions)
     .where(eq(scoringScaleOptions.id, input.id))
     .returning();
+
+  if (projectId) {
+    await calculateAllItemScores(projectId);
+  }
+
   return option;
 }

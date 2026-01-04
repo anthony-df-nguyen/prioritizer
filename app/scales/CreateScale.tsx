@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { unwrapIpcResult } from "@/shared/ipc/unwrap";
 import type { NewScoringScale } from "@/electron/db/schema/scoringScales";
 import { useProjects } from "@/app/context/ProjectContext";

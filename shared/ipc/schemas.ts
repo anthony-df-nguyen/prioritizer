@@ -38,7 +38,6 @@ export const DriversUpdateSchema = z.object({
   scaleId: z.string().optional(),
 });
 
-
 // Scoring Scales
 export const ScoringScalesCreateSchema = z.object({
   projectId: z.string().min(1),
@@ -82,11 +81,12 @@ export const ScoringScaleOptionsUpdateSchema = z.object({
   label: z.string().min(1).optional(),
   value: z.number().int().optional(),
   sortOrder: z.number().int().optional(),
-  projectId: z.string().optional()
+  projectId: z.string().optional(),
 });
 
 export const ScoringScaleOptionsDeleteSchema = z.object({
   id: z.string().min(1),
+  projectId: z.string().optional(),
 });
 
 // Items
