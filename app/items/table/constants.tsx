@@ -25,7 +25,7 @@ export function buildItemCols(
       headerName: "Score",
       sortable: true,
       cellDataType: "number",
-      width:100,
+      width: 100,
     },
     {
       field: "name",
@@ -79,6 +79,7 @@ export function buildItemCols(
 
   const driverCols: ColDef<ItemsWithScores>[] = activeDrivers.map((d) => {
     const options = d.scoringScaleOptions ?? [];
+    //console.log('options: ', options);
     const hasOptions = options.length > 0;
 
     const labelByValue = new Map(
@@ -111,18 +112,21 @@ export function buildItemCols(
 
       valueSetter: (p: ValueSetterParams<ItemsWithScores>) => {
         const raw = p.newValue;
-        //console.log('raw: ', raw);
         const next =
           raw === "None" || raw === "" || raw == null ? null : Number(raw);
 
         if (next !== null && Number.isNaN(next)) return false;
+
+        // Find the scoring scale option that matches the selected value
+        const option = options.find((o) => o.value === next);
+        const scoringScaleOptionId = option?.id || null;
 
         // Save to DB using existing set function
         window.api.itemScores
           .set({
             itemId: p.data.id,
             driverId: d.id,
-            scoringScaleOptionId: null, // We're using the value directly
+            scoringScaleOptionId: scoringScaleOptionId,
             value: next,
           })
           .then(async () => {

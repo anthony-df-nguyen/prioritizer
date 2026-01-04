@@ -1,7 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { unwrapIpcResult } from "@/shared/ipc/unwrap";
+import React, { useMemo, useState } from "react";
 import type {
-  ScoringScale,
   ScoringScaleOption,
   ScoringScaleWithOptions,
 } from "@/electron/db/schema/scoringScales";
@@ -114,9 +112,9 @@ export function EditScaleForm({
           activeProjectId
         });
       }
-
       // Update existing options
       for (const option of existingOptions) {
+        // Find the original option to compare values
         await window.api.scoringScaleOption.update({...option, activeProjectId});
       }
 

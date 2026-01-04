@@ -82,6 +82,7 @@ export const ScoringScaleOptionsUpdateSchema = z.object({
   label: z.string().min(1).optional(),
   value: z.number().int().optional(),
   sortOrder: z.number().int().optional(),
+  //projectId: z.string()
 });
 
 export const ScoringScaleOptionsDeleteSchema = z.object({

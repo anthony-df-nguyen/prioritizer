@@ -2,11 +2,12 @@
 import { db } from "../../electron/db";
 import {
   scoringScaleOptions,
+  itemDriverScores,
   type NewScoringScaleOption,
   type ScoringScaleOption,
 } from "../db/schema/";
 import { calculateAllItemScores } from "./items.repo";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export async function listScoringScaleOptions(
@@ -41,8 +42,20 @@ export async function createScoringScaleOption(
 }
 
 export async function updateScoringScaleOption(
-  input: Partial<ScoringScaleOption> & Pick<ScoringScaleOption, "id">
+  input: Partial<ScoringScaleOption> &
+    Pick<ScoringScaleOption, "id">
 ): Promise<ScoringScaleOption> {
+  // First, get the current option to compare values
+  const currentOption = await db
+    .select()
+    .from(scoringScaleOptions)
+    .where(eq(scoringScaleOptions.id, input.id))
+    .limit(1);
+
+  if (currentOption.length === 0) {
+    throw new Error("Option not found");
+  }
+
   const [option] = await db
     .update(scoringScaleOptions)
     .set({
@@ -51,6 +64,20 @@ export async function updateScoringScaleOption(
     })
     .where(eq(scoringScaleOptions.id, input.id))
     .returning();
+
+  // If the value was changed, update related item_driver_scores
+  if (input.value !== undefined && input.value !== currentOption[0].value) {
+    console.log("Detected scoring option value change for: ", input.label)
+    await db
+      .update(itemDriverScores)
+      .set({
+        value: input.value,
+        updatedOn: new Date().toISOString(),
+      })
+      .where(eq(itemDriverScores.scoringScaleOptionId, input.id));
+    //await calculateAllItemScores(input.projectId);
+  }
+
   return option;
 }
 

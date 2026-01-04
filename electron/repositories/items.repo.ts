@@ -181,7 +181,9 @@ export async function calculateAllItemScores(projectId: string): Promise<void> {
     .select({ id: items.id })
     .from(items)
     .where(eq(items.projectId, projectId));
-  
+
+    console.log(`Running calculateAllItemScores for project ${projectId}. Found: ${findItems}`)
+
   // For each item, calculate the weighted score
   for (const item of findItems) {
     await calculateItemScore(item.id); // Reuse the single-item function
