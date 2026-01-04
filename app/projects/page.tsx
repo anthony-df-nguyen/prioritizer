@@ -49,7 +49,7 @@ export default function Home() {
               onEditClick={goToProject}
               title={project.name}
               hypertext="Project"
-              active={activeProjectId === project.id}
+              selected={activeProjectId === project.id}
             >
               <div className="">
                 <div>

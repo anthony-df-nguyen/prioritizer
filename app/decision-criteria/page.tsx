@@ -2,9 +2,11 @@
 import { useState } from "react";
 import PageHeader from "../components/AppShell/PageHeader";
 import { useDrivers } from "../context/DecisionDriverContext";
+import { useRouter } from "next/navigation";
 import { useScoringScales } from "../context/ScoringScaleContext";
 import { CreateCriteriaForm } from "./CreateCriteria";
 import Card from "../components/UI/Card";
+
 
 export default function DecisionCriteria() {
   const { drivers, refreshDrivers } = useDrivers();
@@ -19,6 +21,7 @@ export default function DecisionCriteria() {
     const scale = scoringScales.find((s) => s.id === scaleId);
     return scale ? scale.name : scaleId;
   };
+  const router = useRouter();
 
   return (
     <main className="space-y-6">
@@ -45,8 +48,9 @@ export default function DecisionCriteria() {
             key={d.id}
             title={d.name}
             hypertext="Criteria"
-            onEditClick={()=>{}}
-            active={false}
+            onEditClick={() => router.push(`/decision-criteria/${d.id}`)}
+            selected={false}
+            active={d.archived === 0 ? true : false}
           >
             <div>
               <div>

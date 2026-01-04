@@ -111,12 +111,13 @@ export function EditScaleForm({
       for (const option of optionsToDelete) {
         await window.api.scoringScaleOption.delete({
           id: option.id,
+          activeProjectId
         });
       }
 
       // Update existing options
       for (const option of existingOptions) {
-        await window.api.scoringScaleOption.update(option);
+        await window.api.scoringScaleOption.update({...option, activeProjectId});
       }
 
       // Create new options
@@ -126,6 +127,7 @@ export function EditScaleForm({
           scaleId: scale.id,
           createdOn: timestamp,
           updatedOn: timestamp,
+          projectId: activeProjectId as string,
         });
       }
     } catch (err) {

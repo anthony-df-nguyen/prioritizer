@@ -8,6 +8,9 @@ import type {
   NewScoringScale,
   ScoringScaleOption,
   NewScoringScaleOption,
+  Item,
+  NewItem,
+  ItemDriverScore,
 } from "../../electron/db/schema/";
 
 import type { IpcResult } from "./result";
@@ -31,7 +34,11 @@ export type IpcRoutes = {
   };
 
   // Drivers
-  "drivers:listByProject": {
+  "drivers:listActiveByProject": {
+    input: { projectId: Project["id"] };
+    output: DecisionDriver[];
+  };
+  "drivers:listAllByProject": {
     input: { projectId: Project["id"] };
     output: DecisionDriver[];
   };
@@ -45,7 +52,10 @@ export type IpcRoutes = {
   "drivers:update": {
     input: Pick<DecisionDriver, "id"> &
       Partial<
-        Pick<DecisionDriver, "name" | "weight" | "archived" | "description">
+        Pick<
+          DecisionDriver,
+          "name" | "weight" | "archived" | "description" | "scaleId"
+        >
       >;
     output: DecisionDriver;
   };
@@ -76,16 +86,46 @@ export type IpcRoutes = {
   };
   "scoringScaleOption:create": {
     input: Pick<NewScoringScaleOption, "scaleId" | "label" | "value"> &
-      Partial<Pick<NewScoringScaleOption, "sortOrder">>;
+      Partial<Pick<NewScoringScaleOption, "sortOrder">> & { projectId: string };
     output: ScoringScaleOption;
   };
   "scoringScaleOption:update": {
-    input: Partial<ScoringScaleOption> & Pick<ScoringScaleOption, "id">;
+    input: Partial<ScoringScaleOption> & Pick<ScoringScaleOption, "id"> & { projectId: string };
     output: ScoringScaleOption;
   };
   "scoringScaleOption:delete": {
-    input: { id: ScoringScaleOption["id"] };
-    output: ScoringScale;
+    input: { id: ScoringScaleOption["id"] } & { projectId: string };
+    output: ScoringScaleOption;
+  };
+
+  // Items
+  "items:listByProject": {
+    input: { projectId: Project["id"] };
+    output: Item[];
+  };
+  "items:create": {
+    input: Pick<NewItem, "projectId" | "name" | "description">;
+    output: Item;
+  };
+  "items:update": {
+    input: Pick<Item, "id"> &
+      Partial<Pick<Item, "name" | "description" | "archived">>;
+    output: Item;
+  };
+
+  // Item Driver Scores
+  "itemScores:listByItem": {
+    input: { itemId: Item["id"] };
+    output: ItemDriverScore[];
+  };
+  "itemScores:set": {
+    input: {
+      itemId: Item["id"];
+      driverId: DecisionDriver["id"];
+      scoringScaleOptionId: string | null;
+      value: number | null;
+    };
+    output: ItemDriverScore;
   };
 };
 

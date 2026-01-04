@@ -38,8 +38,10 @@ contextBridge.exposeInMainWorld("api", {
 
   // Convenience wrappers for drivers-related operations
   drivers: {
-    listByProject: (input: InputOf<"drivers:listByProject">) =>
-      invoke("drivers:listByProject", input),
+    listActiveByProject: (input: InputOf<"drivers:listActiveByProject">) =>
+      invoke("drivers:listActiveByProject", input),
+    listAllByProject: (input: InputOf<"drivers:listAllByProject">) =>
+      invoke("drivers:listAllByProject", input),
     create: (input: InputOf<"drivers:create">) =>
       invoke("drivers:create", input),
     update: (input: InputOf<"drivers:update">) =>
@@ -66,5 +68,18 @@ contextBridge.exposeInMainWorld("api", {
       invoke("scoringScaleOption:update", input),
     delete: (input: InputOf<"scoringScaleOption:delete">) =>
       invoke("scoringScaleOption:delete", input),
+  },
+
+  items: {
+    listByProject: (input: InputOf<"items:listByProject">) =>
+      invoke("items:listByProject", input),
+    create: (input: InputOf<"items:create">) => invoke("items:create", input),
+    update: (input: InputOf<"items:update">) => invoke("items:update", input),
+  },
+
+  itemScores: {
+    listByItem: (input: InputOf<"itemScores:listByItem">) =>
+      invoke("itemScores:listByItem", input),
+    set: (input: InputOf<"itemScores:set">) => invoke("itemScores:set", input),
   },
 });

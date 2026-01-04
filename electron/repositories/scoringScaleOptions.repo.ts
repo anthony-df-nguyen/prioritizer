@@ -5,10 +5,13 @@ import {
   type NewScoringScaleOption,
   type ScoringScaleOption,
 } from "../db/schema/";
-import { and, asc,desc, eq } from "drizzle-orm";
+import { calculateAllItemScores } from "./items.repo";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
-export async function listScoringScaleOptions(scaleId: string): Promise<ScoringScaleOption[]> {
+export async function listScoringScaleOptions(
+  scaleId: string
+): Promise<ScoringScaleOption[]> {
   return db
     .select()
     .from(scoringScaleOptions)
@@ -18,7 +21,7 @@ export async function listScoringScaleOptions(scaleId: string): Promise<ScoringS
 
 export async function createScoringScaleOption(
   input: Pick<NewScoringScaleOption, "scaleId" | "label" | "value"> &
-    Partial<Pick<NewScoringScaleOption, "sortOrder">>
+    Partial<Pick<NewScoringScaleOption, "sortOrder">> & { projectId: string }
 ): Promise<ScoringScaleOption> {
   const now = new Date().toISOString();
 
@@ -34,7 +37,6 @@ export async function createScoringScaleOption(
       updatedOn: now,
     })
     .returning();
-
   return option;
 }
 
@@ -49,17 +51,15 @@ export async function updateScoringScaleOption(
     })
     .where(eq(scoringScaleOptions.id, input.id))
     .returning();
-
   return option;
 }
 
-export async function deleteScoringScaleOption(
-  id: string
-): Promise<ScoringScaleOption> {
+export async function deleteScoringScaleOption(input: {
+  id: string;
+}): Promise<ScoringScaleOption> {
   const [option] = await db
     .delete(scoringScaleOptions)
-    .where(eq(scoringScaleOptions.id, id))
+    .where(eq(scoringScaleOptions.id, input.id))
     .returning();
-
   return option;
 }

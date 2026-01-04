@@ -6,7 +6,8 @@ export const IPC = {
     update: "projects:update",
   },
   drivers: {
-    listByProject: "drivers:listByProject",
+    listActiveByProject: "drivers:listActiveByProject",
+    listAllByProject: "drivers:listAllByProject",
     create: "drivers:create",
     update: "drivers:update",
   },
@@ -22,6 +23,15 @@ export const IPC = {
     update: "scoringScaleOption:update",
     delete: "scoringScaleOption:delete",
   },
+  items: {
+    listByProject: "items:listByProject",
+    create: "items:create",
+    update: "items:update",
+  },
+  itemScores: {
+    listByItem: "itemScores:listByItem",
+    set: "itemScores:set",
+  },
 } as const;
 
 // Useful type: all channel strings
@@ -29,4 +39,6 @@ export type IpcChannel =
   | (typeof IPC.projects)[keyof typeof IPC.projects]
   | (typeof IPC.drivers)[keyof typeof IPC.drivers]
   | (typeof IPC.scoringScales)[keyof typeof IPC.scoringScales]
-  | (typeof IPC.scoringScaleOption)[keyof typeof IPC.scoringScaleOption];
+  | (typeof IPC.scoringScaleOption)[keyof typeof IPC.scoringScaleOption]
+  | (typeof IPC.items)[keyof typeof IPC.items]
+  | (typeof IPC.itemScores)[keyof typeof IPC.itemScores];

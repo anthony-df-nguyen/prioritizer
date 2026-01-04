@@ -6,11 +6,21 @@ import {DriversListByProjectSchema, DriversCreateSchema,DriversUpdateSchema} fro
 
 export function registerDriversIpc() {
   ipcMain.handle(
-    "drivers:listByProject",
+    "drivers:listActiveByProject",
     createIpcHandler({
       schema: DriversListByProjectSchema,
       handler: async (_event, input) => {
-        return driversRepo.listDriversByProject(input.projectId);
+        return driversRepo.listActiveDriversByProject(input.projectId);
+      },
+    })
+  );
+
+    ipcMain.handle(
+    "drivers:listAllByProject",
+    createIpcHandler({
+      schema: DriversListByProjectSchema,
+      handler: async (_event, input) => {
+        return driversRepo.listAllDriversByProject(input.projectId);
       },
     })
   );

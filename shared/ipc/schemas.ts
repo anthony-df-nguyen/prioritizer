@@ -35,6 +35,7 @@ export const DriversUpdateSchema = z.object({
   description: z.string().optional().nullable(),
   weight: z.number().int().optional(),
   archived: z.number().int().optional(),
+  scaleId: z.string().optional(),
 });
 
 
@@ -72,6 +73,7 @@ export const ScoringScaleOptionsCreateSchema = z.object({
   label: z.string().min(1),
   value: z.number().int(),
   sortOrder: z.number().int().optional(),
+  projectId: z.string().min(1),
 });
 
 export const ScoringScaleOptionsUpdateSchema = z.object({
@@ -84,4 +86,34 @@ export const ScoringScaleOptionsUpdateSchema = z.object({
 
 export const ScoringScaleOptionsDeleteSchema = z.object({
   id: z.string().min(1),
+});
+
+// Items
+export const ItemsListByProjectSchema = z.object({
+  projectId: z.string().min(1),
+});
+
+export const ItemsCreateSchema = z.object({
+  projectId: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().optional().nullable(),
+});
+
+export const ItemsUpdateSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1).optional(),
+  description: z.string().optional().nullable(),
+  archived: z.number().int().optional(),
+});
+
+// Item Driver Scores
+export const ItemScoresListByItemSchema = z.object({
+  itemId: z.string(),
+});
+
+export const ItemScoresSetSchema = z.object({
+  itemId: z.string(),
+  driverId: z.string(),
+  scoringScaleOptionId: z.string().nullable(),
+  value: z.number().nullable(),
 });

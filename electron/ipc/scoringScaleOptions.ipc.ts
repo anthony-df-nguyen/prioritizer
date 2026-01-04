@@ -9,7 +9,7 @@ import {
 } from "../../shared/ipc/schemas";
 
 export function registerScoringScaleOptionsIPC() {
-ipcMain.handle(
+  ipcMain.handle(
     "scoringScaleOption:listByScale",
     createIpcHandler({
       schema: ScoringScaleOptionsListSchema,
@@ -33,7 +33,7 @@ ipcMain.handle(
     "scoringScaleOption:update",
     createIpcHandler({
       schema: ScoringScaleOptionsUpdateSchema,
-      handler: async (_event, input: {id: string}) => {
+      handler: async (_event, input) => {
         return optionsRepo.updateScoringScaleOption(input);
       },
     })
@@ -43,8 +43,8 @@ ipcMain.handle(
     "scoringScaleOption:delete",
     createIpcHandler({
       schema: ScoringScaleOptionsDeleteSchema,
-      handler: async (_event, input: {id: string}) => {
-        return optionsRepo.deleteScoringScaleOption(input.id);
+      handler: async (_event, input) => {
+        return optionsRepo.deleteScoringScaleOption(input);
       },
     })
   );
