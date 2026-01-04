@@ -90,7 +90,7 @@ export type IpcRoutes = {
     output: ScoringScaleOption;
   };
   "scoringScaleOption:update": {
-    input: Partial<ScoringScaleOption> & Pick<ScoringScaleOption, "id"> & { projectId: string };
+   input: Partial<ScoringScaleOption> & Pick<ScoringScaleOption, "id"> & { projectId: string };
     output: ScoringScaleOption;
   };
   "scoringScaleOption:delete": {

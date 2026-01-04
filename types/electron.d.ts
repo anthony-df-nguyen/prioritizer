@@ -26,7 +26,7 @@ declare global {
         listActiveByProject: (
           input: InputOf<"drivers:listActiveByProject">
         ) => Promise<IpcResult<OutputOf<"drivers:listActiveByProject">>>;
-         listAllByProject: (
+        listAllByProject: (
           input: InputOf<"drivers:listAllByProject">
         ) => Promise<IpcResult<OutputOf<"drivers:listAllByProject">>>;
         create: (
@@ -60,7 +60,7 @@ declare global {
           input: InputOf<"scoringScaleOption:create">
         ) => Promise<IpcResult<OutputOf<"scoringScaleOption:create">>>;
         update: (
-          input: (InputOf<"scoringScaleOption:update">),
+          input: InputOf<"scoringScaleOption:update">
         ) => Promise<IpcResult<OutputOf<"scoringScaleOption:update">>>;
         delete: (
           input: InputOf<"scoringScaleOption:delete">

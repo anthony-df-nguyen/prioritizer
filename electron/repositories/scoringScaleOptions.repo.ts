@@ -42,8 +42,8 @@ export async function createScoringScaleOption(
 }
 
 export async function updateScoringScaleOption(
-  input: Partial<ScoringScaleOption> &
-    Pick<ScoringScaleOption, "id">
+  input: Partial<ScoringScaleOption> & Pick<ScoringScaleOption, "id">,
+  projectId?: string
 ): Promise<ScoringScaleOption> {
   // First, get the current option to compare values
   const currentOption = await db
@@ -67,7 +67,8 @@ export async function updateScoringScaleOption(
 
   // If the value was changed, update related item_driver_scores
   if (input.value !== undefined && input.value !== currentOption[0].value) {
-    console.log("Detected scoring option value change for: ", input.label)
+    console.log("Detected scoring option value change for: ", input.label);
+
     await db
       .update(itemDriverScores)
       .set({
@@ -75,7 +76,9 @@ export async function updateScoringScaleOption(
         updatedOn: new Date().toISOString(),
       })
       .where(eq(itemDriverScores.scoringScaleOptionId, input.id));
-    //await calculateAllItemScores(input.projectId);
+    if (projectId) {
+      await calculateAllItemScores(projectId);
+    }
   }
 
   return option;

@@ -34,7 +34,7 @@ export function registerScoringScaleOptionsIPC() {
     createIpcHandler({
       schema: ScoringScaleOptionsUpdateSchema,
       handler: async (_event, input) => {
-        return optionsRepo.updateScoringScaleOption(input);
+        return optionsRepo.updateScoringScaleOption(input, input.projectId);
       },
     })
   );

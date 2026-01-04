@@ -5,6 +5,7 @@ import type {
 } from "@/electron/db/schema/scoringScales";
 import { useProjects } from "@/app/context/ProjectContext";
 import { useScoringScales } from "@/app/context/ScoringScaleContext";
+import { useItems } from "../context/ItemsContext";
 
 type EditScaleFormProps = {
   scale: ScoringScaleWithOptions;
@@ -24,6 +25,7 @@ export function EditScaleForm({
 }: EditScaleFormProps) {
   const { activeProjectId } = useProjects();
   const { refreshScoringScales } = useScoringScales();
+  const {refreshItems} = useItems();
   const existingSet = useMemo(
     () => new Set(existingNames.map((s) => s.toLowerCase())),
     [existingNames]
@@ -109,13 +111,17 @@ export function EditScaleForm({
       for (const option of optionsToDelete) {
         await window.api.scoringScaleOption.delete({
           id: option.id,
-          activeProjectId
+          activeProjectId,
         });
       }
       // Update existing options
       for (const option of existingOptions) {
         // Find the original option to compare values
-        await window.api.scoringScaleOption.update({...option, activeProjectId});
+        await window.api.scoringScaleOption.update({
+          ...option, // { id, label?, value?, ... }
+          projectId: activeProjectId, // <-- add this
+        });
+        refreshItems();
       }
 
       // Create new options
