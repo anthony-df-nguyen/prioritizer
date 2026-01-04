@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, sql, desc } from "drizzle-orm";
 
 import { db } from "../../electron/db";
 import {
@@ -19,7 +19,7 @@ export async function listItemsByProject(projectId: string): Promise<Item[]> {
     .select()
     .from(items)
     .where(and(eq(items.projectId, projectId), eq(items.archived, 0)))
-    .orderBy(items.name);
+    .orderBy(desc(items.score));
 }
 
 export type CreateItemInput = Pick<
@@ -152,23 +152,25 @@ export async function calculateItemScore(itemId: string): Promise<void> {
   // Calculate the weighted score for this specific item
   const score = await db
     .select({
-      total: sql<number>`SUM(${itemDriverScores.value} * ${decisionDrivers.weight})`
+      total: sql<number>`SUM(${itemDriverScores.value} * ${decisionDrivers.weight})`,
     })
     .from(itemDriverScores)
-    .leftJoin(decisionDrivers, eq(itemDriverScores.driverId, decisionDrivers.id))
-    .where(and(
-      eq(itemDriverScores.itemId, itemId),
-      eq(decisionDrivers.archived, 0) // Only include active drivers
-    ))
+    .leftJoin(
+      decisionDrivers,
+      eq(itemDriverScores.driverId, decisionDrivers.id)
+    )
+    .where(
+      and(
+        eq(itemDriverScores.itemId, itemId),
+        eq(decisionDrivers.archived, 0) // Only include active drivers
+      )
+    )
     .groupBy(itemDriverScores.itemId);
 
   const totalScore = score[0]?.total ?? null;
 
   // Update the item's score
-  await db
-    .update(items)
-    .set({ score: totalScore })
-    .where(eq(items.id, itemId));
+  await db.update(items).set({ score: totalScore }).where(eq(items.id, itemId));
 }
 
 /**
@@ -182,7 +184,9 @@ export async function calculateAllItemScores(projectId: string): Promise<void> {
     .from(items)
     .where(eq(items.projectId, projectId));
 
-    console.log(`Running calculateAllItemScores for project ${projectId}. Found: ${findItems}`)
+  console.log(
+    `Running calculateAllItemScores for project ${projectId}. Found: ${findItems}`
+  );
 
   // For each item, calculate the weighted score
   for (const item of findItems) {

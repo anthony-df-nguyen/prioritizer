@@ -70,7 +70,7 @@ export function buildItemCols(
         p.data.description = raw as string;
         return true;
       },
-      //flex: 1,
+      flex: 1,
       //minWidth: 240,
     },
   ];
