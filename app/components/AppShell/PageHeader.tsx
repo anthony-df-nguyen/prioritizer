@@ -7,6 +7,8 @@ type Props =
       actionButton: boolean;
       actionText?: string;
       onActionClick?: () => void;
+      secondaryActionButton?: React.ReactNode;
+      secondaryAction?: () => void;
     }
   | {
       title: string;
@@ -14,6 +16,8 @@ type Props =
       actionButton: true;
       actionText: string;
       onActionClick: () => void;
+      secondaryActionButton: React.ReactNode;
+      secondaryAction: () => void;
     };
 
 const PageHeader = ({
@@ -22,6 +26,8 @@ const PageHeader = ({
   actionButton,
   actionText,
   onActionClick,
+  secondaryAction,
+  secondaryActionButton,
 }: Props) => {
   return (
     <div>
@@ -29,14 +35,17 @@ const PageHeader = ({
         <div>
           <div className="text-2xl font-semibold">{title}</div>
         </div>
-        {actionButton && (
-          <button
-            className="submit_button w-auto"
-            onClick={onActionClick}
-          >
-            {actionText}
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {" "}
+          {actionButton && (
+            <button className="submit_button w-auto" onClick={onActionClick}>
+              {actionText}
+            </button>
+          )}
+          {secondaryActionButton && (
+            <div onClick={secondaryAction}> {secondaryActionButton}</div>
+          )}
+        </div>
       </div>
       <div className="text-neutral-500 text-sm mt-4">{description}</div>
     </div>

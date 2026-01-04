@@ -7,7 +7,7 @@ import {
   ItemsCreateSchema,
   ItemsUpdateSchema,
   ItemScoresListByItemSchema,
-  ItemScoresSetSchema,
+  ItemScoresSetSchema, UpdateAllItemScores
 } from "../../shared/ipc/schemas";
 
 export function registerItemsIpc() {
@@ -57,6 +57,18 @@ export function registerItemsIpc() {
       schema: ItemScoresSetSchema,
       handler: async (_event, input) => {
         return itemsRepo.setItemDriverScore(input);
+      },
+    })
+  );
+
+  ipcMain.handle(
+   "items:updateAllItemScores",
+    createIpcHandler({
+      schema: UpdateAllItemScores,
+      handler: async (_event, input: {
+        projectId: string,
+      }) => {
+        return itemsRepo.calculateAllItemScores(input.projectId);
       },
     })
   );

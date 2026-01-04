@@ -5,7 +5,7 @@ interface AppRoute {
 
 const routes: AppRoute[] = [
   { path: "/", name: "Prioritize" },
-  { path: "/decision-criteria", name: "Decision Criteria" },
+  { path: "/decision-criteria", name: "Criteria" },
   { path: "/scales", name: "Scales" },
   { path: "/projects", name: "Projects" },
 ];

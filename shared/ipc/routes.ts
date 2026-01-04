@@ -112,7 +112,10 @@ export type IpcRoutes = {
       Partial<Pick<Item, "name" | "description" | "archived">>;
     output: Item;
   };
-
+  "items:updateAllItemScores": {
+    input: {projectId: string},
+    output: Promise<void>
+  }
   // Item Driver Scores
   "itemScores:listByItem": {
     input: { itemId: Item["id"] };

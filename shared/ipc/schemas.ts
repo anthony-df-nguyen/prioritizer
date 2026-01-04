@@ -118,3 +118,7 @@ export const ItemScoresSetSchema = z.object({
   scoringScaleOptionId: z.string().nullable(),
   value: z.number().nullable(),
 });
+
+export const UpdateAllItemScores = z.object({
+   projectId: z.string(),
+})

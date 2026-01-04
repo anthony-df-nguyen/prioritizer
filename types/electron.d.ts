@@ -77,6 +77,7 @@ declare global {
         update: (
           input: InputOf<"items:update">
         ) => Promise<IpcResult<OutputOf<"items:update">>>;
+        updateAllItemScores: (input: { projectId: string }) => Promise<void>;
       };
 
       itemScores: {

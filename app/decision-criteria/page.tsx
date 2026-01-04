@@ -62,6 +62,11 @@ export default function DecisionCriteria() {
                 <div className="text-neutral-600 text-xs">Uses Scale</div>
                 <div>{findScaleName(d.scaleId) || "No scale"}</div>
               </div>
+              <br />
+               <div>
+                <div className="text-neutral-600 text-xs">Weight</div>
+                <div>{d.weight}</div>
+              </div>
               <div className="flex gap-4 justify-between mt-6">
                 <div>
                   {" "}

@@ -82,8 +82,12 @@ export default function Scales() {
               <div>
                 <div className=" text-neutral-600 text-xs">Scoring Options</div>
                 {s.options.map((o) => (
-                  <div key={o.id} className="font-mono text-sm">
-                    {o.label}
+                  <div
+                    key={o.id}
+                    className="font-mono text-sm flex items-center justify-between gap-1"
+                  >
+                    <div> {o.label}</div>
+                    <div>{o.value}</div>
                   </div>
                 ))}
               </div>

@@ -27,6 +27,7 @@ export const IPC = {
     listByProject: "items:listByProject",
     create: "items:create",
     update: "items:update",
+    updateAllItemScores: "items:updateAllScores",
   },
   itemScores: {
     listByItem: "itemScores:listByItem",

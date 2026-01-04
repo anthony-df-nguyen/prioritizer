@@ -75,6 +75,7 @@ contextBridge.exposeInMainWorld("api", {
       invoke("items:listByProject", input),
     create: (input: InputOf<"items:create">) => invoke("items:create", input),
     update: (input: InputOf<"items:update">) => invoke("items:update", input),
+    updateAllItemScores: (input: {projectId: string}) => invoke("items:updateAllItemScores", input),
   },
 
   itemScores: {

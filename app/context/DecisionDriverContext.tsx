@@ -63,27 +63,33 @@ export function DriverProvider({ children }: { children: ReactNode }) {
 
     try {
       const list = await fetchDrivers(activeProjectId);
-      
+
       // Create a map of scaleId -> options for efficient lookup
-      const scaleOptionsMap = new Map<string, { id: string; label: string; value: number | null }[]>();
-      scoringScales.forEach(scale => {
+      const scaleOptionsMap = new Map<
+        string,
+        { id: string; label: string; value: number | null }[]
+      >();
+      scoringScales.forEach((scale) => {
         if (scale.options) {
-          scaleOptionsMap.set(scale.id, scale.options.map(option => ({
-            id: option.id,
-            label: option.label,
-            value: option.value
-          })));
+          scaleOptionsMap.set(
+            scale.id,
+            scale.options.map((option) => ({
+              id: option.id,
+              label: option.label,
+              value: option.value,
+            }))
+          );
         }
       });
-      
-      const listWithScores: DriverWithScores[] = list.map(driver => {
+
+      const listWithScores: DriverWithScores[] = list.map((driver) => {
         const options = scaleOptionsMap.get(driver.scaleId) || [];
         return {
           ...driver,
-          scoringScaleOptions: options
+          scoringScaleOptions: options,
         };
       });
-      
+
       setDrivers(listWithScores);
     } catch (e) {
       setDrivers([]);
