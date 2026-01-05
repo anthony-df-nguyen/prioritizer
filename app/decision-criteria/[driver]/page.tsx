@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useDrivers } from "@/app/context/DecisionDriverContext";
-import { EditCriteriaForm } from "../EditCriteria";
+import { EditCriteriaForm } from "../forms/EditCriteria";
 
 export default function ProjectPage() {
   const { driver } = useParams<{ driver: string }>();

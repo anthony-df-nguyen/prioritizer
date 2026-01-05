@@ -9,7 +9,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import routes from "@/app/routes";
-import { Select } from "../UI/Select";
+import { Select } from "../UI/Inputs/Select";
 import type { ReactNode } from "react";
 import { useProjects } from "@/app/context/ProjectContext";
 
@@ -82,7 +82,7 @@ export default function Shell({ children }: ShellProps) {
             <div className="hidden sm:ml-6 sm:flex sm:items-center">
               <div className="flex items-center gap-2">
                   <div className="text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center  text-sm font-medium">
-                    Active Project
+                    Active Folder
                   </div>
                   <Select<string>
                     label={undefined}

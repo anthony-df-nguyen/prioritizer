@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import { EditScaleForm } from "../EditScale";
+import { EditScaleForm } from "../forms/EditScale";
 import { useScoringScales } from "@/app/context/ScoringScaleContext";
 import { useRouter } from "next/navigation";
 import { ScoringScaleWithOptions } from "@/electron/db/schema";

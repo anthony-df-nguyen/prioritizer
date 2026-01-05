@@ -11,7 +11,7 @@ const Table = () => {
   const { items, refreshItems } = useItems();
   const rowData = items as ItemsWithScores[];
   const { drivers } = useDrivers();
-  const {activeProjectId} = useProjects()
+  const { activeProjectId } = useProjects();
   const columnDefs = useMemo(
     () =>
       buildItemCols(
@@ -25,7 +25,8 @@ const Table = () => {
             value: o.value as number,
           })),
         })),
-         activeProjectId as string, refreshItems
+        activeProjectId as string,
+        refreshItems
       ),
     [drivers, refreshItems, activeProjectId]
   );

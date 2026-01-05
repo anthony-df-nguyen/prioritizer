@@ -16,7 +16,7 @@ export default function EmptyState({ text, description, icon, primaryOnclick }: 
       <span className="mt-2 block text-sm font-semibold text-gray-900">
         {text}
       </span>
-      <span className="mt-2 block text-sm text-gray-900">{description}</span>
+      <span className="mt-2 block text-sm text-gray-900 max-w-prose mx-auto">{description}</span>
     </button>
   );
 }

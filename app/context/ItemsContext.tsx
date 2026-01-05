@@ -40,7 +40,6 @@ const fetchItems = async (projectId: string): Promise<ItemsWithScores[]> => {
 export function ItemsProvider({ children }: { children: ReactNode }) {
   const { activeProjectId } = useProjects();
   const [items, setItems] = useState<ItemsWithScores[]>([]);
-  console.log('items: ', items);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

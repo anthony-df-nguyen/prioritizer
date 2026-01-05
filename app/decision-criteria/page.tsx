@@ -4,9 +4,8 @@ import PageHeader from "../components/AppShell/PageHeader";
 import { useDrivers } from "../context/DecisionDriverContext";
 import { useRouter } from "next/navigation";
 import { useScoringScales } from "../context/ScoringScaleContext";
-import { CreateCriteriaForm } from "./CreateCriteria";
+import { CreateCriteriaForm } from "./forms/CreateCriteria";
 import Card from "../components/UI/Card";
-
 
 export default function DecisionCriteria() {
   const { drivers, refreshDrivers } = useDrivers();
@@ -33,16 +32,10 @@ export default function DecisionCriteria() {
         onActionClick={toggleCreate}
       />
       {createMode && (
-        <CreateCriteriaForm
-          onCreate={async (payload) => {
-            await window.api.drivers.create(payload);
-            refreshDrivers();
-          }}
-          onCancel={() => handleCreateMode(false)}
-        />
+        <CreateCriteriaForm onCancel={() => handleCreateMode(false)} />
       )}
       {/* Drivers */}
-      <div className="gap-4 grid lg:grid-cols-2">
+      {!createMode && <div className="gap-4 grid lg:grid-cols-2">
         {drivers.map((d) => (
           <Card
             key={d.id}
@@ -63,7 +56,7 @@ export default function DecisionCriteria() {
                 <div>{findScaleName(d.scaleId) || "No scale"}</div>
               </div>
               <br />
-               <div>
+              <div>
                 <div className="text-neutral-600 text-xs">Weight</div>
                 <div>{d.weight}</div>
               </div>
@@ -86,7 +79,7 @@ export default function DecisionCriteria() {
             </div>
           </Card>
         ))}
-      </div>
+      </div>}
     </main>
   );
 }

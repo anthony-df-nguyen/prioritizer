@@ -1,7 +1,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import { useProjects } from "@/app/context/ProjectContext";
-import { EditProjectForm } from "@/app/projects/EditForm";
+import { EditProjectForm } from "@/app/folders/forms/EditForm";
 import { useRouter } from "next/navigation";
 
 export default function ProjectPage() {
@@ -17,7 +17,7 @@ export default function ProjectPage() {
     <div>
       <EditProjectForm
         project={project}
-        onCancel={() => router.push("/projects")}
+        onCancel={() => router.push("/folders")}
       />
     </div>
   );

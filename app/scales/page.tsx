@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageHeader from "../components/AppShell/PageHeader";
 import Card from "../components/UI/Card";
-import { CreateScaleForm } from "./CreateScale";
+import { CreateScaleForm } from "./forms/CreateScale";
 import { useScoringScales } from "../context/ScoringScaleContext";
 import { useRouter } from "next/navigation";
 

@@ -1,72 +1,26 @@
-import React, { useEffect, useMemo, useState } from "react";
-import type { NewItem } from "@/electron/db/schema/items";
-import { useProjects } from "@/app/context/ProjectContext";
+import React, { useEffect } from "react";
+import { useCreateItemLogic } from "./logic";
 
 type CreateItemFormProps = {
-  /** Call your IPC / API here. Return the created item or void. */
-  onCreate: (payload: NewItem) => Promise<void> | void;
   onCancel: () => void;
 };
 
-function nowIso() {
-  return new Date().toISOString();
-}
-
 export function CreateItemForm({
-  onCreate,
   onCancel,
 }: CreateItemFormProps) {
-  const { activeProjectId } = useProjects();
-
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-
-  const [submitting, setSubmitting] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-
-  const errors = useMemo(() => {
-    const e: Record<string, string> = {};
-
-    if (!name.trim()) e.name = "Item name is required.";
-
-    if (description.length > 500)
-      e.description = "Description is too long (max 500 chars).";
-
-    return e;
-  }, [name, description]);
-
-  const canSubmit = Object.keys(errors).length === 0 && !submitting;
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setFormError(null);
-
-    if (!canSubmit) return;
-
-    try {
-      setSubmitting(true);
-
-      const timestamp = nowIso();
-
-      const payload: NewItem = {
-        id: globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`, // fallback
-        projectId: activeProjectId as string,
-        name: name.trim(),
-        description: description.trim() ? description.trim() : null,
-        createdOn: timestamp,
-        updatedOn: timestamp,
-        archived: 0,
-        archivedOn: null,
-      };
-
-      await onCreate(payload);
-    } catch (err) {
-      setFormError("Failed to create item.");
-    } finally {
-      setSubmitting(false);
-      onCancel();
-    }
-  }
+  const {
+    name,
+    setName,
+    description,
+    setDescription,
+    errors,
+    submitting,
+    setSubmitting,
+    formError,
+    setFormError,
+    canSubmit,
+    handleSubmit
+  } = useCreateItemLogic({onCancel});
 
   return (
     <div className="bg-white relative block w-full rounded-lg border-1 border-gray-300 p-12 hover:border-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 cursor-pointer">

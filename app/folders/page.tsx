@@ -1,18 +1,18 @@
 "use client";
 import { useState } from "react";
-import { useProjects } from "../context/ProjectContext";
-import { CreateProjectForm } from "./CreateForm";
+import { useProjects } from "../context/DataContext";
+import { CreateProjectForm } from "./forms/CreateForm";
 import PageHeader from "../components/AppShell/PageHeader";
 import Card from "../components/UI/Card";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { projects, hasProjects, refreshProjects, activeProjectId } =
+  const { projects, hasProjects, activeProjectId } =
     useProjects();
   const [createMode, handleCreateMode] = useState<boolean>(false);
   const router = useRouter();
   const goToProject = () =>
-    router.push(`/projects/${activeProjectId}?edit=true`);
+    router.push(`/folders/${activeProjectId}?edit=true`);
 
   const toggleCreate = () => {
     createMode ? handleCreateMode(false) : handleCreateMode(true);
@@ -22,20 +22,16 @@ export default function Home() {
   return (
     <main className="space-y-6">
       <PageHeader
-        title="Projects"
+        title="My Folders"
         actionButton={true}
         actionText="+ New Project"
         onActionClick={toggleCreate}
-        description="A Project groups together the items, decision drivers, and scoring rules for a specific initiative or problem space. It provides a focused context so prioritization is clear, consistent, and tailored to a single goal."
+        description="A folder groups together the items, decision drivers, and scoring rules for a specific initiative or problem space. It provides a focused context so prioritization is clear, consistent, and tailored to a single goal."
       />
      
       {createMode && (
         <div className="">
           <CreateProjectForm
-            onCreate={async (payload) => {
-              await window.api.projects.create(payload);
-              refreshProjects();
-            }}
             onCancel={() => handleCreateMode(false)}
           />
         </div>
@@ -48,7 +44,7 @@ export default function Home() {
               key={project.id}
               onEditClick={goToProject}
               title={project.name}
-              hypertext="Project"
+              hypertext="Folder"
               selected={activeProjectId === project.id}
             >
               <div className="">

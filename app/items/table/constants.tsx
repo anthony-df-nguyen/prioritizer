@@ -22,17 +22,20 @@ export function buildItemCols(
   const base: ColDef<ItemsWithScores>[] = [
     {
       field: "score",
-      headerName: "Score",
+      headerName: "Total Score",
       sortable: true,
       cellDataType: "number",
-      width: 100,
+      width: 120,
+      pinned: "right",
     },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Item Name",
+      pinned:"left",
       sortable: true,
       filter: true,
       editable: true,
+       headerStyle: {backgroundColor: "#667eea", color:"white"},
       valueSetter: (p: ValueSetterParams<ItemsWithScores>) => {
         const raw = p.newValue;
         if (raw === p.oldValue) return false; // no change
@@ -53,6 +56,7 @@ export function buildItemCols(
     {
       field: "description",
       headerName: "Description",
+      headerStyle: {backgroundColor: "#667eea", color:"white"},
       sortable: true,
       filter: true,
       editable: true,

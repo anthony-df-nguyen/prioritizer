@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ProjectProvider } from "./context/ProjectContext";
-import { DriverProvider } from "./context/DecisionDriverContext";
-import { ScoringScaleProvider } from "./context/ScoringScaleContext";
-import { ItemsProvider } from "./context/ItemsContext";
+import { DataProvider } from "./context/DataContext";
 import "./globals.css";
 import Shell from "./components/AppShell/Shell";
 
@@ -28,22 +25,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ProjectProvider>
-      {" "}
-      <ScoringScaleProvider>
-        <DriverProvider>
-          <ItemsProvider>
-            {" "}
-            <html lang="en" className="h-full">
-              <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
-              >
-                <Shell>{children}</Shell>
-              </body>
-            </html>
-          </ItemsProvider>
-        </DriverProvider>{" "}
-      </ScoringScaleProvider>
-    </ProjectProvider>
+    <DataProvider>
+      <html lang="en" className="h-full">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
+        >
+          <Shell>{children}</Shell>
+        </body>
+      </html>
+    </DataProvider>
   );
 }
