@@ -45,6 +45,7 @@ export const DriversUpdateSchema = z.object({
   description: z.string().optional().nullable(),
   weight: z.number().int().optional(),
   archived: z.number().int().optional(),
+  projectId: z.string().min(1),
   scoringOptions: z
     .array(
       z.object({

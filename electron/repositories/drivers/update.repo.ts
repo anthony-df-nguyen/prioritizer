@@ -6,8 +6,10 @@ import {
   decisionDriverScoringOptions,
   scoringScaleOptions,
   type ScoringScaleOption,
+  itemDriverScores,
 } from "../../db/schema";
 import { eq, and, inArray } from "drizzle-orm";
+import { calculateAllItemScores } from "../items";
 
 export async function updateDriver(
   input: Partial<DecisionDriver> &
@@ -112,6 +114,16 @@ export async function updateDriver(
             )
             .run();
 
+          // Then null the value from the item_driver_score table
+          tx.update(itemDriverScores)
+            .set({
+              value: null,
+            })
+            .where(
+              inArray(itemDriverScores.scoringScaleOptionId, optionsToDelete)
+            )
+            .run();
+
           // Then delete from the scoring scale options table
           tx.delete(scoringScaleOptions)
             .where(inArray(scoringScaleOptions.id, optionsToDelete))
@@ -126,6 +138,7 @@ export async function updateDriver(
     // 2. Update existing options
     for (const option of optionsToUpdate) {
       if (option.id && !option.id.startsWith("temp-")) {
+        // Update the Scoring Scale Option
         await db
           .update(scoringScaleOptions)
           .set({
@@ -135,6 +148,12 @@ export async function updateDriver(
             updatedOn: now,
           })
           .where(eq(scoringScaleOptions.id, option.id));
+        await db
+          .update(itemDriverScores)
+          .set({
+            value: option.value,
+          })
+          .where(eq(itemDriverScores.scoringScaleOptionId, option.id));
       }
     }
 
@@ -157,6 +176,11 @@ export async function updateDriver(
         driverId: input.id,
         scoringOptionId: newOption[0].id,
       });
+    }
+
+    // 4. Recalculate Item Scores if options were deleted or updated
+    if (optionsToUpdate.length > 0 || optionsToDelete.length > 0) {
+      await calculateAllItemScores(input.projectId as string);
     }
   }
 

@@ -54,10 +54,13 @@ export type IpcRoutes = {
     output: DecisionDriver;
   };
   "drivers:update": {
-    input: Pick<DecisionDriver, "id"> &
-      Partial<
-        Pick<DecisionDriver, "name" | "weight" | "archived" | "description">
-      >;
+    input: Partial<DecisionDriver> &
+      Pick<DecisionDriver, "id"> & {
+        scoringOptions?: Pick<
+          ScoringScaleOption,
+          "id" | "label" | "value" | "sortOrder"
+        >[];
+      };
     output: DecisionDriver;
   };
 

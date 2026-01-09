@@ -42,7 +42,7 @@ export async function updateItem(
 export async function calculateItemScore(itemId: string): Promise<void> {
   // Get the item to ensure it exists
   const item = await db
-    .select({ id: items.id })
+    .select({ id: items.id, name: items.name, score: items.score })
     .from(items)
     .where(eq(items.id, itemId))
     .get();
@@ -70,6 +70,7 @@ export async function calculateItemScore(itemId: string): Promise<void> {
     .groupBy(itemDriverScores.itemId);
 
   const totalScore = score[0]?.total ?? null;
+  console.log(`Total Score for ${item.name} was ${item.score} => ${totalScore}`);
 
   // Update the item's score
   await db.update(items).set({ score: totalScore }).where(eq(items.id, itemId));
@@ -87,7 +88,7 @@ export async function calculateAllItemScores(projectId: string): Promise<void> {
     .where(eq(items.projectId, projectId));
 
   console.log(
-    `Running calculateAllItemScores for project ${projectId}. Found: ${findItems}`
+    `Running calculateAllItemScores for project ${projectId}`
   );
 
   // For each item, calculate the weighted score

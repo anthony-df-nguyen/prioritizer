@@ -7,9 +7,8 @@ import type {
   DecisionDriver,
   ScoringScaleOption,
 } from "@/electron/db/schema";
-import { useProjects, useDrivers } from "@/app/context/DataContext";
+import { useProjects, useDrivers, useItems } from "@/app/context/DataContext";
 import { unwrapIpcResult } from "@/shared/ipc/unwrap";
-import { IpcResult } from "@/shared/ipc/result";
 
 type CreateCriteriaFormLogicProps = {
   onCancel: () => void;
@@ -67,6 +66,7 @@ export function useCriteriaFormLogic({
   criteria,
 }: CreateCriteriaFormLogicProps & Partial<EditCriteriaFormLogicProps>) {
   const { activeProjectId } = useProjects();
+  const {refreshItems} = useItems()
   const { refreshDrivers } = useDrivers();
 
   const [name, setName] = useState(criteria?.name || "");
@@ -77,7 +77,6 @@ export function useCriteriaFormLogic({
   );
   //console.log("options: ", options);
   const [optionsLoaded, setOptionsLoaded] = useState(false);
-
 
   useEffect(() => {
     // If edit mode, go get the existing scaleOptions
@@ -192,6 +191,7 @@ export function useCriteriaFormLogic({
       }
 
       refreshDrivers();
+      refreshItems();
       onCancel();
     } catch (err) {
       setFormError(
