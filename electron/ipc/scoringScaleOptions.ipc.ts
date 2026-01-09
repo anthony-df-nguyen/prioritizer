@@ -2,7 +2,7 @@ import { ipcMain } from "electron";
 import { createIpcHandler } from "./_shared";
 import * as optionsRepo from "../repositories/scoringScaleOptions.repo";
 import {
-  ScoringScaleOptionsListSchema,
+  ScoringScaleOptionsListByDriverSchema,
   ScoringScaleOptionsCreateSchema,
   ScoringScaleOptionsUpdateSchema,
   ScoringScaleOptionsDeleteSchema,
@@ -10,11 +10,11 @@ import {
 
 export function registerScoringScaleOptionsIPC() {
   ipcMain.handle(
-    "scoringScaleOption:listByScale",
+    "scoringScaleOption:listByDriver",
     createIpcHandler({
-      schema: ScoringScaleOptionsListSchema,
+      schema: ScoringScaleOptionsListByDriverSchema,
       handler: async (_event, input) => {
-        return optionsRepo.listScoringScaleOptions(input.scaleId);
+        return optionsRepo.listScoringScaleOptionsByDriver(input.driverId);
       },
     })
   );
@@ -24,7 +24,9 @@ export function registerScoringScaleOptionsIPC() {
     createIpcHandler({
       schema: ScoringScaleOptionsCreateSchema,
       handler: async (_event, input) => {
-        return optionsRepo.createScoringScaleOption(input);
+        // Remove projectId from input before passing to repo
+        const {...rest } = input;
+        return optionsRepo.createScoringScaleOption(rest);
       },
     })
   );
@@ -34,7 +36,7 @@ export function registerScoringScaleOptionsIPC() {
     createIpcHandler({
       schema: ScoringScaleOptionsUpdateSchema,
       handler: async (_event, input) => {
-        return optionsRepo.updateScoringScaleOption(input, input.projectId);
+        return optionsRepo.updateScoringScaleOption(input);
       },
     })
   );
@@ -44,7 +46,7 @@ export function registerScoringScaleOptionsIPC() {
     createIpcHandler({
       schema: ScoringScaleOptionsDeleteSchema,
       handler: async (_event, input) => {
-        return optionsRepo.deleteScoringScaleOption(input, input.projectId);
+        return optionsRepo.deleteScoringScaleOption(input);
       },
     })
   );

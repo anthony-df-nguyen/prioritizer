@@ -1,8 +1,12 @@
 import { ipcMain } from "electron";
 import { z } from "zod";
 import { createIpcHandler } from "./_shared";
-import * as driversRepo from "../repositories/drivers.repo";
-import {DriversListByProjectSchema, DriversCreateSchema,DriversUpdateSchema} from "../../shared/ipc/schemas"
+import * as driversRepo from "../repositories/drivers";
+import {
+  DriversListByProjectSchema,
+  DriversCreateSchema,
+  DriversUpdateSchema,DriverScoringOptionDeleteSchema
+} from "../../shared/ipc/schemas";
 
 export function registerDriversIpc() {
   ipcMain.handle(
@@ -15,7 +19,7 @@ export function registerDriversIpc() {
     })
   );
 
-    ipcMain.handle(
+  ipcMain.handle(
     "drivers:listAllByProject",
     createIpcHandler({
       schema: DriversListByProjectSchema,
@@ -39,8 +43,18 @@ export function registerDriversIpc() {
     "drivers:update",
     createIpcHandler({
       schema: DriversUpdateSchema,
-      handler: async (_event, input: {id: string}) => {
+      handler: async (_event, input: { id: string }) => {
         return driversRepo.updateDriver(input);
+      },
+    })
+  );
+
+  ipcMain.handle(
+    "driverScoringOption:delete",
+    createIpcHandler({
+      schema: DriverScoringOptionDeleteSchema,
+      handler: async (_event, input) => {
+        return driversRepo.deleteDriverScoringOptionLink(input);
       },
     })
   );

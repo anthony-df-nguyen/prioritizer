@@ -4,8 +4,7 @@ import type {
   NewProject,
   DecisionDriver,
   NewDecisionDriver,
-  ScoringScale,
-  NewScoringScale,
+  DecisionDriverScoringOption,
   ScoringScaleOption,
   NewScoringScaleOption,
   Item,
@@ -45,59 +44,51 @@ export type IpcRoutes = {
   "drivers:create": {
     input: Pick<
       NewDecisionDriver,
-      "projectId" | "name" | "weight" | "description"
-    >;
+      "projectId" | "name" | "weight" | "description" | "id"
+    > & {
+      scoringOptions?: Pick<
+        ScoringScaleOption,
+        "label" | "value" | "sortOrder"
+      >[];
+    };
     output: DecisionDriver;
   };
   "drivers:update": {
     input: Pick<DecisionDriver, "id"> &
       Partial<
-        Pick<
-          DecisionDriver,
-          "name" | "weight" | "archived" | "description" | "scaleId"
-        >
+        Pick<DecisionDriver, "name" | "weight" | "archived" | "description">
       >;
     output: DecisionDriver;
   };
 
-  // Scoring Scales
-  "scoringScales:listByProject": {
-    input: { projectId: Project["id"] };
-    output: ScoringScale[];
+  // Driver Scoring Option
+  // "driverScoringOption:create": {
+  //   input: Pick<DecisionDriverScoringOption, "driverId" | "scoringOptionId">;
+  //   output: Promise<void>;
+  // };
+  "driverScoringOption:delete": {
+    input: Pick<DecisionDriverScoringOption, "driverId" | "scoringOptionId">;
+    output: Promise<void>;
   };
-  "scoringScales:create": {
-    input: Pick<NewScoringScale, "projectId" | "name"> &
-      Partial<Pick<NewScoringScale, "key" | "sortOrder" | "description">>;
-    output: ScoringScale;
-  };
-  "scoringScales:update": {
-    input: Partial<ScoringScale> & Pick<ScoringScale, "id">;
-    output: ScoringScale;
-  };
-  "scoringScales:archive": {
-    input: Pick<ScoringScale, "id">;
-    output: ScoringScale;
-  };
-
   // Scoring Scale Options
-  "scoringScaleOption:listByScale": {
-    input: { scaleId: ScoringScale["id"] };
+  "scoringScaleOption:listByDriver": {
+    input: { driverId: string };
     output: ScoringScaleOption[];
   };
   "scoringScaleOption:create": {
-    input: Pick<NewScoringScaleOption, "scaleId" | "label" | "value"> &
+    input: Pick<NewScoringScaleOption, "label" | "value"> &
       Partial<Pick<NewScoringScaleOption, "sortOrder">> & { projectId: string };
     output: ScoringScaleOption;
   };
   "scoringScaleOption:update": {
-   input: Partial<ScoringScaleOption> & Pick<ScoringScaleOption, "id"> & { projectId: string };
+    input: Partial<ScoringScaleOption> &
+      Pick<ScoringScaleOption, "id"> & { projectId: string };
     output: ScoringScaleOption;
   };
   "scoringScaleOption:delete": {
     input: { id: ScoringScaleOption["id"] } & { projectId: string };
     output: ScoringScaleOption;
   };
-
   // Items
   "items:listByProject": {
     input: { projectId: Project["id"] };
@@ -113,9 +104,9 @@ export type IpcRoutes = {
     output: Item;
   };
   "items:updateAllItemScores": {
-    input: {projectId: string},
-    output: Promise<void>
-  }
+    input: { projectId: string };
+    output: Promise<void>;
+  };
   // Item Driver Scores
   "itemScores:listByItem": {
     input: { itemId: Item["id"] };

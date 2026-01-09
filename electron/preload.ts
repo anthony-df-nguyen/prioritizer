@@ -48,20 +48,16 @@ contextBridge.exposeInMainWorld("api", {
       invoke("drivers:update", input),
   },
 
-  scoringScales: {
-    listByProject: (input: InputOf<"scoringScales:listByProject">) =>
-      invoke("scoringScales:listByProject", input),
-    create: (input: InputOf<"scoringScales:create">) =>
-      invoke("scoringScales:create", input),
-    update: (input: InputOf<"scoringScales:update">) =>
-      invoke("scoringScales:update", input),
-    archive: (input: InputOf<"scoringScales:archive">) =>
-      invoke("scoringScales:archive", input),
+  driverScoringOption: {
+    // create: (input: InputOf<"driverScoringOption:create">) =>
+    //   invoke("driverScoringOption:create", input),
+    delete: (input: InputOf<"driverScoringOption:delete">) =>
+      invoke("driverScoringOption:delete", input),
   },
 
   scoringScaleOption: {
-    listByScale: (input: InputOf<"scoringScaleOption:listByScale">) =>
-      invoke("scoringScaleOption:listByScale", input),
+    listByDriver: (input: InputOf<"scoringScaleOption:listByDriver">) =>
+      invoke("scoringScaleOption:listByDriver", input),
     create: (input: InputOf<"scoringScaleOption:create">) =>
       invoke("scoringScaleOption:create", input),
     update: (input: InputOf<"scoringScaleOption:update">) =>
@@ -75,7 +71,8 @@ contextBridge.exposeInMainWorld("api", {
       invoke("items:listByProject", input),
     create: (input: InputOf<"items:create">) => invoke("items:create", input),
     update: (input: InputOf<"items:update">) => invoke("items:update", input),
-    updateAllItemScores: (input: {projectId: string}) => invoke("items:updateAllItemScores", input),
+    updateAllItemScores: (input: { projectId: string }) =>
+      invoke("items:updateAllItemScores", input),
   },
 
   itemScores: {

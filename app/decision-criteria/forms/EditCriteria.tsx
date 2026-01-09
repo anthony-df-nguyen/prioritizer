@@ -7,8 +7,7 @@ import {
   Slider,
 } from "../../components/UI/Inputs/";
 import type { DecisionDriver } from "@/electron/db/schema/drivers";
-import { EditCriteriaFormLogic } from "./logic";
-import ScoringScaleCardSelect from "./ScoringScaleCardSelect";
+import { useCriteriaFormLogic } from "./logic";
 
 type EditCriteriaFormProps = {
   onCancel: () => void;
@@ -29,18 +28,18 @@ export function EditCriteriaForm({
     setDescription,
     weight,
     setWeight,
-    scaleId,
-    setScaleId,
     archived,
     setArchived,
     submitting,
     formError,
-    setFormError,
+    options,
+    addOption,
+    updateOption,
+    removeOption,
     errors,
     canSubmit,
-    handleSubmit,
-    scoringScales,
-  } = EditCriteriaFormLogic({ onCancel, criteria });
+    handleSubmit,optionsLoaded
+  } = useCriteriaFormLogic({ onCancel, criteria });
 
   return (
     <div className="bg-white relative block w-full rounded-lg border-1 border-gray-300 p-12 hover:border-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 cursor-pointer">
@@ -110,36 +109,71 @@ export function EditCriteriaForm({
         </div>
 
         {/* Scale */}
-        <ScoringScaleCardSelect
-          activeScaleId={scaleId as string}
-          scales={scoringScales}
-          onClick={(e) => {
-            setScaleId(e);
-          }}
-        />
-        {/* <div className="space-y-1.5 p-6 border rounded-md  border-gray-300">
-          <Select<string>
-            label="Scoring Scale"
-            required
-            helpText="Choose the scale that will be used to score items for this criteria.
-            You can create custom scoring scales later and change the scale used
-            by this criteria at any time."
-            value={scaleId as string}
-            onChange={(e) => {
-              setScaleId(e);
-            }}
-            options={scoringScales.map((s) => ({
-              label: s.name,
-              value: s.id,
-              key: s.id,
-            }))}
-            error={!!errors.scaleId}
-            errorText={errors.scaleId}
-          />
-          <div className="mt-4">
-            <ReadScaleOptions scaleId={scaleId as string} scales={scoringScales} />
+        {/* Options */}
+        <div>
+          <div className="font-bold text-gray-800">Scoring Options</div>
+          <p className="text-sm text-neutral-500">
+            Scoring options are the choices you can pick when scoring an item to
+            this driver.
+          </p>
+          <div className="mt-4 space-y-3 p-4 bg-gray-100 rounded-lg">
+            {!optionsLoaded && <div>Options Loading ...</div>}
+            {optionsLoaded && options.map((option, index) => (
+              <div key={option.id} className="flex gap-3 items-end">
+                <div className="flex-1 space-y-1.5">
+                  <Text
+                    key={option.id + index}
+                    label={`Label`}
+                    value={option.label}
+                    onChange={(e) =>
+                      updateOption(index, "label", e.target.value)
+                    }
+                    placeholder="e.g., High"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Text
+                    required
+                    key={option.id + index}
+                    label={"Value"}
+                    type="number"
+                    value={option.value}
+                    onChange={(e) =>
+                      updateOption(
+                        index,
+                        "value",
+                        parseInt(e.target.value) || 0
+                      )
+                    }
+                    placeholder={"Number"}
+                  />
+                </div>
+
+                {options.length > 2 && (
+                  <button
+                    type="button"
+                    onClick={() => removeOption(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={addOption}
+                className="submit_button"
+              >
+                + Add option
+              </button>
+            </div>
           </div>
-        </div> */}
+        </div>
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3">

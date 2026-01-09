@@ -3,6 +3,9 @@ import { db } from "../../electron/db";
 import {
   scoringScaleOptions,
   itemDriverScores,
+  DecisionDriver,
+  decisionDrivers,
+  decisionDriverScoringOptions,
   type NewScoringScaleOption,
   type ScoringScaleOption,
 } from "../db/schema/";
@@ -11,26 +14,47 @@ import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export async function listScoringScaleOptions(
-  scaleId: string
+  projectId: string
 ): Promise<ScoringScaleOption[]> {
+  // This should list ALL scoring scale options, not just for a specific driver
   return db
     .select()
     .from(scoringScaleOptions)
-    .where(and(eq(scoringScaleOptions.scaleId, scaleId)))
+    .orderBy(desc(scoringScaleOptions.value), asc(scoringScaleOptions.label));
+}
+
+export async function listScoringScaleOptionsByDriver(
+  driverId: string
+): Promise<ScoringScaleOption[]> {
+  console.log(`Looking up scale options for driver ${driverId}`)
+  return db
+    .select({
+      id: scoringScaleOptions.id,
+      label: scoringScaleOptions.label,
+      value: scoringScaleOptions.value,
+      sortOrder: scoringScaleOptions.sortOrder,
+      createdOn: scoringScaleOptions.createdOn,
+      updatedOn: scoringScaleOptions.updatedOn,
+    })
+    .from(scoringScaleOptions)
+    .innerJoin(
+      decisionDriverScoringOptions,
+      eq(decisionDriverScoringOptions.scoringOptionId, scoringScaleOptions.id)
+    )
+    .where(eq(decisionDriverScoringOptions.driverId, driverId))
     .orderBy(desc(scoringScaleOptions.value), asc(scoringScaleOptions.label));
 }
 
 export async function createScoringScaleOption(
-  input: Pick<NewScoringScaleOption, "scaleId" | "label" | "value"> &
-    Partial<Pick<NewScoringScaleOption, "sortOrder">> & { projectId: string }
+  input: Pick<NewScoringScaleOption, "label" | "value" | "sortOrder">
 ): Promise<ScoringScaleOption> {
   const now = new Date().toISOString();
+  console.log("Running CreateScoringScaleOption for: ", input.label);
 
   const [option] = await db
     .insert(scoringScaleOptions)
     .values({
       id: randomUUID(),
-      scaleId: input.scaleId,
       label: input.label,
       value: input.value,
       sortOrder: input.sortOrder ?? 0,

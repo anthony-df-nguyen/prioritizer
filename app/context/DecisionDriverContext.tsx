@@ -11,17 +11,11 @@ import React, {
 } from "react";
 import { unwrapIpcResult } from "@/shared/ipc/unwrap";
 import { OutputOf } from "@/shared/ipc/types";
-import { DecisionDriver } from "@/electron/db/schema";
+import { DecisionDriver, ScoringScaleOption } from "@/electron/db/schema";
 import { useProjects } from "./ProjectContext";
-import { useScoringScales } from "./ScoringScaleContext";
 
-// Minimal Driver shape (matches your drizzle schema fields used by the UI)
 export type DriverWithScores = DecisionDriver & {
-  scoringScaleOptions: {
-    id: string;
-    label: string;
-    value: number | null;
-  }[];
+  scoringOptions: ScoringScaleOption[];
 };
 
 type DriverContextValue = {
@@ -44,10 +38,16 @@ const fetchDrivers = async (projectId: string): Promise<DecisionDriver[]> => {
   return unwrapIpcResult(res);
 };
 
+const fetchScoreOptionsPerDriver = async (driverId: string) => {
+  const res = unwrapIpcResult(
+    await window.api.scoringScaleOption.listByDriver({ driverId })
+  );
+  return res;
+};
+
 export function DriverProvider({ children }: { children: ReactNode }) {
   const { activeProjectId } = useProjects();
   const [drivers, setDrivers] = useState<DriverWithScores[]>([]);
-  const { scoringScales } = useScoringScales();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,31 +64,39 @@ export function DriverProvider({ children }: { children: ReactNode }) {
     try {
       const list = await fetchDrivers(activeProjectId);
 
-      // Create a map of scaleId -> options for efficient lookup
-      const scaleOptionsMap = new Map<
-        string,
-        { id: string; label: string; value: number | null }[]
-      >();
-      scoringScales.forEach((scale) => {
-        if (scale.options) {
-          scaleOptionsMap.set(
-            scale.id,
-            scale.options.map((option) => ({
-              id: option.id,
-              label: option.label,
-              value: option.value,
-            }))
-          );
-        }
+      // Fetch all score options concurrently
+      const scoreOptionPromises = list.map(async (driver) => {
+        const options: ScoringScaleOption[] = await fetchScoreOptionsPerDriver(driver.id);
+        return {
+          driverId: driver.id,
+          options: options.map((opt) => ({
+            id: opt.id,
+            label: opt.label,
+            value: opt.value,
+            createdOn: opt.createdOn,
+            updatedOn: opt.updatedOn,
+            sortOrder: opt.sortOrder,
+          }))
+        };
+      });
+
+      // Wait for all promises to resolve
+      const scoreOptionsResults = await Promise.all(scoreOptionPromises);
+      
+      // Create a map of driverId -> options for efficient lookup
+      const scoreOptionsMap = new Map<string, ScoringScaleOption[]>();
+      scoreOptionsResults.forEach(({ driverId, options }) => {
+        scoreOptionsMap.set(driverId, options);
       });
 
       const listWithScores: DriverWithScores[] = list.map((driver) => {
-        const options = scaleOptionsMap.get(driver.scaleId) || [];
+        const options = scoreOptionsMap.get(driver.id) || [];
         return {
           ...driver,
-          scoringScaleOptions: options,
+          scoringOptions: options,
         };
       });
+      console.log("listWithScores: ", listWithScores)
 
       setDrivers(listWithScores);
     } catch (e) {
@@ -97,7 +105,7 @@ export function DriverProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [activeProjectId, scoringScales]);
+  }, [activeProjectId]);
 
   // Initial load and when active project changes
   useEffect(() => {

@@ -35,7 +35,7 @@ export function buildItemCols(
       sortable: true,
       filter: true,
       editable: true,
-       headerStyle: {backgroundColor: "#667eea", color:"white"},
+       //headerStyle: {backgroundColor: "#667eea", color:"white"},
       valueSetter: (p: ValueSetterParams<ItemsWithScores>) => {
         const raw = p.newValue;
         if (raw === p.oldValue) return false; // no change
@@ -56,7 +56,7 @@ export function buildItemCols(
     {
       field: "description",
       headerName: "Description",
-      headerStyle: {backgroundColor: "#667eea", color:"white"},
+      //headerStyle: {backgroundColor: "#667eea", color:"white"},
       sortable: true,
       filter: true,
       editable: true,

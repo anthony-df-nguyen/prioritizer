@@ -11,14 +11,12 @@ export const IPC = {
     create: "drivers:create",
     update: "drivers:update",
   },
-  scoringScales: {
-    listByProject: "scoringScales:listByProject",
-    create: "scoringScales:create",
-    update: "scoringScales:update",
-    archive: "scoringScales:archive",
+  driverScoringOption: {
+    create: "driverScoringOption:create",
+    delete: "driverScoringOption:delete",
   },
   scoringScaleOption: {
-    listByScale: "scoringScaleOption:listByScale",
+    listByDriver: "scoringScaleOption:listByDriver",
     create: "scoringScaleOption:create",
     update: "scoringScaleOption:update",
     delete: "scoringScaleOption:delete",
@@ -39,7 +37,7 @@ export const IPC = {
 export type IpcChannel =
   | (typeof IPC.projects)[keyof typeof IPC.projects]
   | (typeof IPC.drivers)[keyof typeof IPC.drivers]
-  | (typeof IPC.scoringScales)[keyof typeof IPC.scoringScales]
+  | (typeof IPC.driverScoringOption)[keyof typeof IPC.driverScoringOption]
   | (typeof IPC.scoringScaleOption)[keyof typeof IPC.scoringScaleOption]
   | (typeof IPC.items)[keyof typeof IPC.items]
   | (typeof IPC.itemScores)[keyof typeof IPC.itemScores];

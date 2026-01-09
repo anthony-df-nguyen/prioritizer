@@ -4,12 +4,11 @@ import { and, eq, sql, desc } from "drizzle-orm";
 import { db } from "../../electron/db";
 import {
   items,
-  itemDriverScores,
+  itemDriverScores,decisionDrivers,
   type Item,
   type NewItem,
   type ItemDriverScore,
-} from "../db/schema/items";
-import { decisionDrivers } from "../db/schema/drivers";
+} from "../db/schema/";
 
 /**
  * List non-archived items for a given project.

@@ -59,7 +59,7 @@ const fetchScoringScales = async (
 export function ScoringScaleProvider({ children }: { children: ReactNode }) {
   const { activeProjectId } = useProjects();
   const [scoringScales, setScoringScales] = useState<ScoringScaleWithOptions[]>([]);
-  //console.log('scoringScales: ', scoringScales);
+  console.log('scoringScales: ', scoringScales);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

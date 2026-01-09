@@ -22,11 +22,21 @@ export const DriversListByProjectSchema = z.object({
 
 export const DriversCreateSchema = z.object({
   projectId: z.string().min(1),
+  id: z.string().min(1),
   name: z.string().min(1),
   description: z.string().optional().nullable(),
-  scaleId: z.string().min(1),
   weight: z.number().int(),
   sortOrder: z.number().int().optional(),
+  scoringOptions: z
+    .array(
+      z.object({
+        label: z.string().min(1),
+        value: z.number().int(),
+        sortOrder: z.number().int(),
+        id: z.string().min(1).optional(),
+      })
+    )
+    .optional(),
 });
 
 export const DriversUpdateSchema = z.object({
@@ -35,58 +45,49 @@ export const DriversUpdateSchema = z.object({
   description: z.string().optional().nullable(),
   weight: z.number().int().optional(),
   archived: z.number().int().optional(),
-  scaleId: z.string().optional(),
+  scoringOptions: z
+    .array(
+      z.object({
+        label: z.string().min(1),
+        value: z.number().int(),
+        sortOrder: z.number().int(),
+        id: z.string().min(1).optional(),
+      })
+    )
+    .optional(),
 });
 
-// Scoring Scales
-export const ScoringScalesCreateSchema = z.object({
-  projectId: z.string().min(1),
-  name: z.string().min(1),
-  description: z.string().optional().nullable(),
-  key: z.string().optional().nullable(),
-  sortOrder: z.number().int().optional(),
-  archived: z.number().int().optional(),
-});
-
-export const ScoringScalesUpdateSchema = z.object({
-  id: z.string().min(1),
-  projectId: z.string().min(1).optional(),
-  name: z.string().min(1).optional(),
-  description: z.string().optional().nullable(),
-  key: z.string().optional().nullable(),
-  sortOrder: z.number().int().optional(),
-  archived: z.number().int().optional(),
-});
-
-export const ScoringScalesArchiveSchema = z.object({
-  id: z.string().min(1),
+// Driver Scoring Option Link
+// export const DriverScoringOptionCreateSchema = z.object({
+//   driverId: z.string().min(1),
+//   scoringOptionId: z.string().min(1),
+// });
+export const DriverScoringOptionDeleteSchema = z.object({
+  driverId: z.string().min(1),
+  scoringOptionId: z.string().min(1),
 });
 
 // Scoring Scale Options
-export const ScoringScaleOptionsListSchema = z.object({
-  scaleId: z.string().min(1),
+export const ScoringScaleOptionsListByDriverSchema = z.object({
+  driverId: z.string().min(1),
 });
 
 export const ScoringScaleOptionsCreateSchema = z.object({
-  scaleId: z.string().min(1),
   label: z.string().min(1),
   value: z.number().int(),
   sortOrder: z.number().int().optional(),
-  projectId: z.string().min(1),
 });
 
 export const ScoringScaleOptionsUpdateSchema = z.object({
   id: z.string().min(1),
-  scaleId: z.string().min(1).optional(),
+  driverId: z.string().min(1).optional(),
   label: z.string().min(1).optional(),
   value: z.number().int().optional(),
   sortOrder: z.number().int().optional(),
-  projectId: z.string().optional(),
 });
 
 export const ScoringScaleOptionsDeleteSchema = z.object({
   id: z.string().min(1),
-  projectId: z.string().optional(),
 });
 
 // Items
@@ -120,5 +121,5 @@ export const ItemScoresSetSchema = z.object({
 });
 
 export const UpdateAllItemScores = z.object({
-   projectId: z.string(),
-})
+  projectId: z.string(),
+});

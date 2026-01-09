@@ -9,7 +9,7 @@ export default function EmptyState({ text, description, icon, primaryOnclick }: 
   return (
     <button
       type="button"
-      className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 cursor-pointer"
+      className="bg-white relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 cursor-pointer"
       onClick={primaryOnclick}
     >
       {icon && <div className="h-8 w-8 text-center mx-auto">{icon}</div>}

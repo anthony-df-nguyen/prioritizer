@@ -19,7 +19,7 @@ const Table = () => {
           id: d.id,
           name: d.name,
           archived: d.archived,
-          scoringScaleOptions: d.scoringScaleOptions.map((o) => ({
+          scoringScaleOptions: d.scoringOptions.map((o) => ({
             id: o.id,
             label: o.label,
             value: o.value as number,

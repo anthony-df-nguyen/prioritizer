@@ -34,13 +34,13 @@ export default function Home() {
       )}
       {/* If there are no projects */}
       {!hasProjects && (
-        <div className="text-2xl font-semibold">No Projects Created</div>
+        <div className="text-2xl font-semibold">No Folders Created</div>
       )}
       {!hasProjects && !createMode && (
         <EmptyState
-          text="Create a project"
+          text="Create a Folder"
           icon={<FolderIcon />}
-          description="A project is required to begin building items and scoring criteria"
+          description="A folder is required to begin prioritizing anything"
           primaryOnclick={toggleCreate}
         />
       )}
@@ -59,9 +59,9 @@ export default function Home() {
       {/* If a user has projects but no drivers */}
       {hasProjects && !hasDrivers && !driverCreateMode && (
         <EmptyState
-          text="Create Scoring Criteria"
+          text="Create Scoring Dimension"
           description="One more step before you begin prioritizing.
-Create at least one Scoring Criteria — this defines how your items will be evaluated and scored."
+Create at least one Scoring Dimension — this defines how your items will be evaluated and scored."
           primaryOnclick={() => handleDriverCreate(true)}
           icon={<ClipboardDocumentCheckIcon />}
         />

@@ -1,1 +1,0 @@
-ALTER TABLE `scoring_scales` ADD `description` text;

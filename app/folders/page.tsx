@@ -5,6 +5,7 @@ import { CreateProjectForm } from "./forms/CreateForm";
 import PageHeader from "../components/AppShell/PageHeader";
 import Card from "../components/UI/Card";
 import { useRouter } from "next/navigation";
+import { FolderIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   const { projects, hasProjects, activeProjectId } =
@@ -22,11 +23,12 @@ export default function Home() {
   return (
     <main className="space-y-6">
       <PageHeader
-        title="My Folders"
+        title="Folders"
         actionButton={true}
         actionText="+ New Project"
         onActionClick={toggleCreate}
         description="A folder groups together the items, decision drivers, and scoring rules for a specific initiative or problem space. It provides a focused context so prioritization is clear, consistent, and tailored to a single goal."
+        icon={<FolderIcon height={32} width={32} />}
       />
      
       {createMode && (

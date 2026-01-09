@@ -37,25 +37,18 @@ declare global {
         ) => Promise<IpcResult<OutputOf<"drivers:update">>>;
       };
 
-      scoringScales: {
-        listByProject: (
-          input: InputOf<"scoringScales:listByProject">
-        ) => Promise<IpcResult<OutputOf<"scoringScales:listByProject">>>;
-        create: (
-          input: InputOf<"scoringScales:create">
-        ) => Promise<IpcResult<OutputOf<"scoringScales:create">>>;
-        update: (
-          input: InputOf<"scoringScales:update">
-        ) => Promise<IpcResult<OutputOf<"scoringScales:update">>>;
-        archive: (
-          input: InputOf<"scoringScales:archive">
-        ) => Promise<IpcResult<OutputOf<"scoringScales:archive">>>;
+      driverScoringOption: {
+        // create: (
+        //   input: InputOf<"driverScoringOption:create">
+        // ) => Promise<IpcResult<OutputOf<"driverScoringOption:create">>>;
+        delete: (
+          input: InputOf<"driverScoringOption:delete">
+        ) => Promise<IpcResult<OutputOf<"driverScoringOption:delete">>>;
       };
-
       scoringScaleOption: {
-        listByScale: (
-          input: InputOf<"scoringScaleOption:listByScale">
-        ) => Promise<IpcResult<OutputOf<"scoringScaleOptions:listByScale">>>;
+        listByDriver: (
+          input: InputOf<"scoringScaleOption:listByDriver">
+        ) => Promise<IpcResult<OutputOf<"scoringScaleOption:listByDriver">>>;
         create: (
           input: InputOf<"scoringScaleOption:create">
         ) => Promise<IpcResult<OutputOf<"scoringScaleOption:create">>>;

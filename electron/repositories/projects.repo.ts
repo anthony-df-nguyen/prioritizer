@@ -3,10 +3,13 @@ import { db } from "../../electron/db";
 import { projects, type NewProject, type Project } from "../db/schema/";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
-import { ensureDefaultHmlScale } from "./scoringScales.repo";
 
 export async function listProjects(): Promise<Project[]> {
-  return db.select().from(projects).where(eq(projects.archived, 0)).orderBy(projects.name);
+  return db
+    .select()
+    .from(projects)
+    .where(eq(projects.archived, 0))
+    .orderBy(projects.name);
 }
 
 export async function createProject(
@@ -26,8 +29,6 @@ export async function createProject(
       archived: 0,
     })
     .returning();
-  await ensureDefaultHmlScale(project.id);
-
   return project;
 }
 

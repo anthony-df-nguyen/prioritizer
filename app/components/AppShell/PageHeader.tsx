@@ -1,4 +1,5 @@
 import "react";
+import { FolderIcon } from "@heroicons/react/20/solid";
 
 type Props =
   | {
@@ -9,6 +10,7 @@ type Props =
       onActionClick?: () => void;
       secondaryActionButton?: React.ReactNode;
       secondaryAction?: () => void;
+      icon: React.ReactNode;
     }
   | {
       title: string;
@@ -18,6 +20,7 @@ type Props =
       onActionClick: () => void;
       secondaryActionButton: React.ReactNode;
       secondaryAction: () => void;
+      icon: React.ReactNode;
     };
 
 const PageHeader = ({
@@ -28,12 +31,16 @@ const PageHeader = ({
   onActionClick,
   secondaryAction,
   secondaryActionButton,
+  icon,
 }: Props) => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <div>
-          <div className="text-2xl font-semibold">{title}</div>
+        <div className="">
+          <div className="flex items-center gap-2">
+            {icon}
+            <div className="text-2xl font-semibold text-neutral-800" >{title}</div>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {" "}
