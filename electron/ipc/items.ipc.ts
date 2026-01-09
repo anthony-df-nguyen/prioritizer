@@ -1,13 +1,14 @@
 import { ipcMain } from "electron";
 import { z } from "zod";
 import { createIpcHandler } from "./_shared";
-import * as itemsRepo from "../repositories/items.repo";
+import * as itemsRepo from "../repositories/items";
 import {
   ItemsListByProjectSchema,
   ItemsCreateSchema,
   ItemsUpdateSchema,
   ItemScoresListByItemSchema,
-  ItemScoresSetSchema, UpdateAllItemScores
+  ItemScoresSetSchema,
+  UpdateAllItemScores,
 } from "../../shared/ipc/schemas";
 
 export function registerItemsIpc() {
@@ -62,12 +63,15 @@ export function registerItemsIpc() {
   );
 
   ipcMain.handle(
-   "items:updateAllItemScores",
+    "items:updateAllItemScores",
     createIpcHandler({
       schema: UpdateAllItemScores,
-      handler: async (_event, input: {
-        projectId: string,
-      }) => {
+      handler: async (
+        _event,
+        input: {
+          projectId: string;
+        }
+      ) => {
         return itemsRepo.calculateAllItemScores(input.projectId);
       },
     })

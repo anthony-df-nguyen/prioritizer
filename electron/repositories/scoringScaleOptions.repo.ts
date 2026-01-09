@@ -9,7 +9,7 @@ import {
   type NewScoringScaleOption,
   type ScoringScaleOption,
 } from "../db/schema/";
-import { calculateAllItemScores } from "./items.repo";
+import { calculateAllItemScores } from "./items/items.repo";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
