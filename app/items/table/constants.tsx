@@ -83,11 +83,13 @@ export function buildItemCols(
 
   const driverCols: ColDef<ItemsWithScores>[] = activeDrivers.map((d) => {
     const options = d.scoringScaleOptions ?? [];
-    //console.log('options: ', options);
     const hasOptions = options.length > 0;
 
     const labelByValue = new Map(
       options.map((o) => [o.value, o.label] as const)
+    );
+    const labelByID = new Map(
+      options.map((o) => [o.id, o.label] as const)
     );
 
     return {
@@ -100,6 +102,7 @@ export function buildItemCols(
       width: 160,
       singleClickEdit: true,
       valueFormatter: (p) => {
+        console.log(p)
         if (p.value == null) return "";
         const n = Number(p.value);
         if (Number.isNaN(n)) return "";

@@ -2,14 +2,15 @@
 import { useState } from "react";
 import { useProjects } from "../context/DataContext";
 import { CreateProjectForm } from "./forms/CreateForm";
+import ExportButton from "../components/ExportButton";
+import ImportButton from "../components/ImportButton";
 import PageHeader from "../components/AppShell/PageHeader";
 import Card from "../components/UI/Card";
 import { useRouter } from "next/navigation";
 import { FolderIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
-  const { projects, hasProjects, activeProjectId } =
-    useProjects();
+  const { projects, hasProjects, activeProjectId } = useProjects();
   const [createMode, handleCreateMode] = useState<boolean>(false);
   const router = useRouter();
   const goToProject = () =>
@@ -18,7 +19,6 @@ export default function Home() {
   const toggleCreate = () => {
     createMode ? handleCreateMode(false) : handleCreateMode(true);
   };
-
 
   return (
     <main className="space-y-6">
@@ -30,12 +30,14 @@ export default function Home() {
         description="A folder groups together the items, decision drivers, and scoring rules for a specific initiative or problem space. It provides a focused context so prioritization is clear, consistent, and tailored to a single goal."
         icon={<FolderIcon height={32} width={32} />}
       />
-     
+      <div className="flex items-center gap-2">
+        <ImportButton />
+        <ExportButton />
+      </div>
+
       {createMode && (
         <div className="">
-          <CreateProjectForm
-            onCancel={() => handleCreateMode(false)}
-          />
+          <CreateProjectForm onCancel={() => handleCreateMode(false)} />
         </div>
       )}
       {hasProjects && !createMode && (

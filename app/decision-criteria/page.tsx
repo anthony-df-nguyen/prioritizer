@@ -66,7 +66,7 @@ export default function DecisionCriteria() {
             <Card
               key={d.id}
               title={d.name}
-              hypertext="Criteria"
+              hypertext="Scoring Dimension"
               onEditClick={() => router.push(`/decision-criteria/${d.id}`)}
               selected={false}
               active={d.archived === 0 ? true : false}
@@ -101,7 +101,7 @@ export default function DecisionCriteria() {
                   </div>
                 </div>
                 {/* Scores */}
-                <div className="mt-4 flex-col flex gap-2">
+                <div className="mt-4 flex-col flex gap-2 max-h-[250px] overflow-y-auto">
                   {d.scoringOptions.map((o) => (
                     <div
                       key={o.id}

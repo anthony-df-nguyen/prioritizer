@@ -31,6 +31,10 @@ export const IPC = {
     listByItem: "itemScores:listByItem",
     set: "itemScores:set",
   },
+  db: {
+    exportBackup: "db:exportBackup",
+    importBackup: "db:importBackup"
+  },
 } as const;
 
 // Useful type: all channel strings
@@ -40,4 +44,5 @@ export type IpcChannel =
   | (typeof IPC.driverScoringOption)[keyof typeof IPC.driverScoringOption]
   | (typeof IPC.scoringScaleOption)[keyof typeof IPC.scoringScaleOption]
   | (typeof IPC.items)[keyof typeof IPC.items]
-  | (typeof IPC.itemScores)[keyof typeof IPC.itemScores];
+  | (typeof IPC.itemScores)[keyof typeof IPC.itemScores]
+  | (typeof IPC.db)[keyof typeof IPC.db];

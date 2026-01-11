@@ -2,7 +2,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "node:path";
 
-import { createDb } from "./db";
+import { getDb } from "./db";
 import { runMigrations } from "./db/migrate";
 import { registerIpcHandlers } from "./ipc";
 
@@ -38,7 +38,7 @@ function registerCoreIpc() {
 }
 
 app.whenReady().then(async () => {
-  const db = createDb();
+  const db = getDb();
   //console.log("db: ", db);
   runMigrations(db);
 

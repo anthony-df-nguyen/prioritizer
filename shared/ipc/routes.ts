@@ -124,6 +124,16 @@ export type IpcRoutes = {
     };
     output: ItemDriverScore;
   };
+
+  // DB
+  "db:exportBackup": {
+    input: null;
+    output: void;
+  };
+  "db:importBackup": {
+    input: null;
+    output: void;
+  };
 };
 
 // Helper types for consumers

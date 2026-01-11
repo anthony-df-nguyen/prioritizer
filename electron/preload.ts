@@ -80,4 +80,9 @@ contextBridge.exposeInMainWorld("api", {
       invoke("itemScores:listByItem", input),
     set: (input: InputOf<"itemScores:set">) => invoke("itemScores:set", input),
   },
+
+  db: {
+    exportBackup: () => invoke("db:exportBackup", null),
+    importBackup: () => invoke("db:importBackup", null),
+  },
 });

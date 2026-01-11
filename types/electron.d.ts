@@ -82,6 +82,11 @@ declare global {
         ) => Promise<IpcResult<OutputOf<"itemScores:set">>>;
       };
 
+      db: {
+        exportBackup: (input: null) => void;
+        importBackup: (input: null) => void;
+      };
+
       ping: () => Promise<string>;
     };
   }
