@@ -7,10 +7,10 @@ const ExportButton = () => {
     window.api.db.exportBackup(null)
   }
   return (
-    <div className="submit_button max-w-fit" onClick={() => onExportBackup()}>
+    <div className="button bgPrimary max-w-fit" onClick={() => onExportBackup()}>
       Export Database
     </div>
   );
 };
 
-export default ExportButton;
+export {ExportButton}

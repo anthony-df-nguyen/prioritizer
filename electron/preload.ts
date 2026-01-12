@@ -84,5 +84,6 @@ contextBridge.exposeInMainWorld("api", {
   db: {
     exportBackup: () => invoke("db:exportBackup", null),
     importBackup: () => invoke("db:importBackup", null),
+    delete: () => invoke("db:delete", null),
   },
 });

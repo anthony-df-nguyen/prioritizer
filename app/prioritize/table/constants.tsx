@@ -31,11 +31,11 @@ export function buildItemCols(
     {
       field: "name",
       headerName: "Item Name",
-      pinned:"left",
+      pinned: "left",
       sortable: true,
       filter: true,
       editable: true,
-       //headerStyle: {backgroundColor: "#667eea", color:"white"},
+      //headerStyle: {backgroundColor: "#667eea", color:"white"},
       valueSetter: (p: ValueSetterParams<ItemsWithScores>) => {
         const raw = p.newValue;
         if (raw === p.oldValue) return false; // no change
@@ -88,9 +88,7 @@ export function buildItemCols(
     const labelByValue = new Map(
       options.map((o) => [o.value, o.label] as const)
     );
-    const labelByID = new Map(
-      options.map((o) => [o.id, o.label] as const)
-    );
+    const labelByID = new Map(options.map((o) => [o.id, o.label]));
 
     return {
       colId: `driver:${d.id}`,
@@ -102,39 +100,33 @@ export function buildItemCols(
       width: 160,
       singleClickEdit: true,
       valueFormatter: (p) => {
-        console.log(p)
-        if (p.value == null) return "";
-        const n = Number(p.value);
-        if (Number.isNaN(n)) return "";
-        return hasOptions ? labelByValue.get(n) ?? String(n) : String(n);
+        const n = String(p.value)
+        return typeof n === 'string' ? labelByID.get(n) as string : "";
       },
 
       cellEditor: "agSelectCellEditor",
       //cellEditorPopup: true,
       cellEditorParams: hasOptions
         ? {
-            values: ["None", ...options.map((o) => o.value)],
+            values: ["None", ...options.map((o) => o.id)], // Use ID instead of value
           }
         : undefined,
 
       valueSetter: (p: ValueSetterParams<ItemsWithScores>) => {
-        const raw = p.newValue;
-        const next =
-          raw === "None" || raw === "" || raw == null ? null : Number(raw);
+        const selectedID = p.newValue;
+        console.log('selectedID: ', selectedID);
+        
 
-        if (next !== null && Number.isNaN(next)) return false;
-
-        // Find the scoring scale option that matches the selected value
-        const option = options.find((o) => o.value === next);
-        const scoringScaleOptionId = option?.id || null;
+        // Find the scoring scale option that matches the selected scale ID
+        const option = options.find((o) => o.id === selectedID); // Match by ID instead of value
 
         // Save to DB using existing set function
         window.api.itemScores
           .set({
             itemId: p.data.id,
             driverId: d.id,
-            scoringScaleOptionId: scoringScaleOptionId,
-            value: next,
+            scoringScaleOptionId: option ? selectedID : null,
+            value: option ? option?.value : undefined,
           })
           .then(async () => {
             // Refresh data after successful save
@@ -147,7 +139,7 @@ export function buildItemCols(
           });
 
         // Update grid data immediately
-        p.data[d.id] = next;
+        p.data[d.id] = selectedID; // Store the ID instead of the value
         return true;
       },
     };

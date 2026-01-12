@@ -143,7 +143,7 @@ export function CreateCriteriaForm({ onCancel }: CreateCriteriaFormProps) {
               <button
                 type="button"
                 onClick={addOption}
-                className="submit_button"
+                className="button bgPrimary bgHover"
               >
                 + Add option
               </button>
@@ -151,21 +151,12 @@ export function CreateCriteriaForm({ onCancel }: CreateCriteriaFormProps) {
           </div>
         </div>
 
-        {/* Scale */}
-        {/* <ScoringScaleCardSelect
-          activeScaleId={scaleId}
-          scales={scoringScales}
-          onClick={(e) => {
-            setScaleId(e);
-          }}
-        /> */}
-
         {/* Actions */}
         <div className="flex items-center justify-end gap-3">
-          <button className="cancel_button" onClick={onCancel}>
+          <div className="button bgCancel bgHover" onClick={onCancel}>
             Cancel
-          </button>
-          <button type="submit" disabled={!canSubmit} className="submit_button">
+          </div>
+          <button type="submit" disabled={!canSubmit} className="button bgPrimary bgHover">
             {submitting ? "Creating…" : "Create Criteria"}
           </button>
         </div>

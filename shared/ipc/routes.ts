@@ -134,6 +134,10 @@ export type IpcRoutes = {
     input: null;
     output: void;
   };
+  "db:delete": {
+    input: null;
+    output: void;
+  }
 };
 
 // Helper types for consumers

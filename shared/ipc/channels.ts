@@ -33,7 +33,8 @@ export const IPC = {
   },
   db: {
     exportBackup: "db:exportBackup",
-    importBackup: "db:importBackup"
+    importBackup: "db:importBackup",
+    delete: "db:delete",
   },
 } as const;
 

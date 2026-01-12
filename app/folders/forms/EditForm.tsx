@@ -84,10 +84,10 @@ export function EditProjectForm({ project, onCancel }: EditProjectFormProps) {
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3">
-          <button type="button" className="cancel_button" onClick={onCancel}>
+          <button type="button" className="button bgCancel bgHover" onClick={onCancel}>
             Cancel
           </button>
-          <button type="submit" disabled={!canSubmit} className="submit_button">
+          <button type="submit" disabled={!canSubmit} className="button bgPrimary bgHover">
             {submitting ? "Updating…" : "Update Folder"}
           </button>
         </div>

@@ -27,7 +27,7 @@ type ItemsContextValue = {
 };
 
 export type ItemsWithScores = Item & {
-  [driverId: string]: number | null;
+  [driverId: string]: string | null;
 };
 
 const ItemsContext = createContext<ItemsContextValue | null>(null);
@@ -69,7 +69,7 @@ export function ItemsProvider({ children }: { children: ReactNode }) {
             const scoreArray = unwrapIpcResult(scores);
 
             scoreArray.forEach((s: ItemDriverScore) => {
-              newData[s.driverId] = s.value;
+              newData[s.driverId] = s.scoringScaleOptionId;
             });
           } catch (e) {
             console.error("Failed to load scores for item", item.id, e);

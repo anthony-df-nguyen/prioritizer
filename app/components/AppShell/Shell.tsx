@@ -97,7 +97,7 @@ export default function Shell({ children }: ShellProps) {
                     }))}
                     placeholder={projects.length ? "Select a project…" : "No projects"}
                     disabled={!projects.length}
-                    className="w-[140px]"
+                    className="w-fit"
                   />
                 </div>
             </div>

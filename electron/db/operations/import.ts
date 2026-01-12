@@ -1,16 +1,16 @@
 import { dialog, BrowserWindow, BaseWindow, app } from "electron";
 import fs from "node:fs";
 import path from "node:path";
-import { getSqlite } from "./index";
+import { getSqlite } from "../index";
 
 /**
  * Import a SQLite database file and overwrite the current DB file on disk.
  * By default, relaunches the app so all DB handles reinitialize cleanly.
  */
-export async function importBackup(opts?: {
+const importBackup = async (opts?: {
   window?: BrowserWindow;
   relaunch?: boolean; // default: true
-}) {
+}) => {
   console.log("Starting importBackup function");
   const win = opts?.window;
   const relaunch = opts?.relaunch ?? true;
@@ -110,17 +110,19 @@ export async function importBackup(opts?: {
 
   // 4) Relaunch to ensure all cached db/drizzle singletons are recreated cleanly
   console.log("Relaunching app:", relaunch);
-if (relaunch) {
-  app.relaunch();
+  if (relaunch) {
+    app.relaunch();
 
-  // Let the IPC return and logs flush, then quit cleanly
-  setTimeout(() => {
-    app.quit();
-  }, 150);
+    // Let the IPC return and logs flush, then quit cleanly
+    setTimeout(() => {
+      app.quit();
+    }, 150);
 
-  return { ok: true as const, path: sourcePath, relaunched: true as const };
-}
+    return { ok: true as const, path: sourcePath, relaunched: true as const };
+  }
 
   console.log("Import completed without relaunch");
   return { ok: true as const, path: sourcePath, relaunched: false as const };
-}
+};
+
+export { importBackup };

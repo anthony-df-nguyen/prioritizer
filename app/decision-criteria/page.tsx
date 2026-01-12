@@ -5,18 +5,15 @@ import { useDrivers, useProjects } from "../context/DataContext";
 import { useRouter } from "next/navigation";
 import { CreateCriteriaForm } from "./forms/CreateCriteria";
 import Card from "../components/UI/Card";
-import EmptyState from "../components/UI/EmptyState";
 import {
-  FolderIcon,
   ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
-import { CreateProjectForm } from "../folders/forms/CreateForm";
+import Initalization from "../components/AppShell/Initialization";
 
 export default function DecisionCriteria() {
   const { drivers, hasDrivers } = useDrivers();
   const { hasProjects } = useProjects();
   const [createMode, handleCreateMode] = useState<boolean>(false);
-  const [createProject, handleCreateProject] = useState<boolean>(false);
 
   const toggleCreate = () => {
     createMode ? handleCreateMode(false) : handleCreateMode(true);
@@ -28,40 +25,24 @@ export default function DecisionCriteria() {
     <main className="space-y-6">
       <PageHeader
         title="Decision Criteria"
-        actionButton={hasProjects ? true : false}
+        actionButton={hasProjects && hasDrivers ? true : false}
         actionText="+ New Criteria"
         description="Decision Criteria are the factors used to evaluate and compare items within a project. Each criterion represents what matters most (such as impact, effort, or risk) and is typically weighted to reflect its relative importance in the final priority score."
         onActionClick={toggleCreate}
         icon={<ClipboardDocumentCheckIcon height={32} width={32} />}
       />
       {/* Empty State when No Projects Have been Made Yet*/}
-      {!hasProjects && !createProject && (
-        <EmptyState
-          text="Create a Folder"
-          icon={<FolderIcon />}
-          description="A folder is required to begin prioritizing anything"
-          primaryOnclick={() => handleCreateProject(true)}
-        />
+      {(!hasProjects || !hasDrivers) && (
+        <Initalization driversRequired={true} />
       )}
-      {/* Empty State when a project is made but no drivers yet*/}
-      {hasProjects && !hasDrivers && (
-        <EmptyState
-          text="Create Scoring Dimension"
-          description="One more step before you begin prioritizing.
-        Create at least one Scoring Dimension — this defines how your items will be evaluated and scored."
-          primaryOnclick={() => handleCreateMode(true)}
-          icon={<ClipboardDocumentCheckIcon />}
-        />
-      )}
-      {createProject && (
-        <CreateProjectForm onCancel={() => handleCreateProject(false)} />
-      )}
-      {createMode && (
+   
+
+      {hasDrivers && createMode && (
         <CreateCriteriaForm onCancel={() => handleCreateMode(false)} />
       )}
       {/* Drivers */}
       {!createMode && (
-        <div className="gap-4 grid lg:grid-cols-2">
+        <div className="gap-4 grid lg:grid-cols-2 xl:grid-cols-3">
           {drivers.map((d) => (
             <Card
               key={d.id}

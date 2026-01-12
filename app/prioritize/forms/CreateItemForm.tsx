@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+"use client"
 import { useCreateItemLogic } from "./logic";
 
 type CreateItemFormProps = {
@@ -72,13 +72,13 @@ export function CreateItemForm({
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3">
-          <button className="cancel_button" onClick={onCancel}>
+          <button className="button bgCancel bgHover" onClick={onCancel}>
             Cancel
           </button>
           <button
             type="submit"
             disabled={!canSubmit}
-            className="submit_button"
+            className="button bgPrimary bgHover"
           >
             {submitting ? "Creating…" : "Create item"}
           </button>

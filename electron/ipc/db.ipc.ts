@@ -1,7 +1,6 @@
 // /electron/ipc/handlers.ts
 import { ipcMain, BrowserWindow } from "electron";
-import { exportBackup } from "../db/backup";
-import { importBackup } from "../db/import";
+import { exportBackup, importBackup, deleteDatabase } from "../db/operations";
 
 export function registerDBIPCHandlers() {
   ipcMain.handle("db:exportBackup", async (event) => {
@@ -19,5 +18,13 @@ export function registerDBIPCHandlers() {
     // importBackup will relaunch+exit by default (per the function we wrote)
     // so you may not see the response on the renderer side—this is expected.
     return importBackup({ window: win, relaunch: true });
+  });
+  ipcMain.handle("db:delete", async (event) => {
+    try {
+      return await deleteDatabase();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      return { ok: false as const, reason: "error" as const, message };
+    }
   });
 }

@@ -8,7 +8,7 @@ import {
   FolderIcon,
   ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
-import ItemsPage from "./items/page";
+import ItemsPage from "./prioritize/page";
 
 export default function Home() {
   const { hasProjects, refreshProjects, activeProject } = useProjects();
@@ -47,10 +47,6 @@ export default function Home() {
       {createMode && (
         <div className="">
           <CreateProjectForm
-            // onCreate={async (payload) => {
-            //   await window.api.projects.create(payload);
-            //   refreshProjects();
-            // }}
             onCancel={() => handleCreateMode(false)}
           />
         </div>

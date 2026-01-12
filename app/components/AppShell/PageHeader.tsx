@@ -39,13 +39,13 @@ const PageHeader = ({
         <div className="">
           <div className="flex items-center gap-2">
             {icon}
-            <div className="text-2xl font-semibold text-neutral-800" >{title}</div>
+            <div className="text-2xl font-bold text-neutral-900" >{title}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
           {" "}
           {actionButton && (
-            <button className="submit_button w-auto" onClick={onActionClick}>
+            <button className="button bgPrimary bgHover w-auto" onClick={onActionClick}>
               {actionText}
             </button>
           )}

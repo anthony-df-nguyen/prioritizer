@@ -167,7 +167,7 @@ export function EditCriteriaForm({
               <button
                 type="button"
                 onClick={addOption}
-                className="submit_button"
+                className="button bgPrimary bgHover"
               >
                 + Add option
               </button>
@@ -177,10 +177,10 @@ export function EditCriteriaForm({
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3">
-          <button className="cancel_button" onClick={onCancel}>
+          <button className="button bgCancel bgHover" onClick={onCancel}>
             Cancel
           </button>
-          <button type="submit" disabled={!canSubmit} className="submit_button">
+          <button type="submit" disabled={!canSubmit} className="button bgPrimary bgHover">
             {submitting ? "Updating…" : "Update Criteria"}
           </button>
         </div>

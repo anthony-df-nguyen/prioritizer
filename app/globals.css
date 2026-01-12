@@ -25,13 +25,38 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.submit_button {
-  @apply rounded-lg bg-indigo-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer hover:bg-indigo-700 transition
+/* My Tailwind Global Buttons */
+
+.colorPrimary {
+  @apply text-blue-500
 }
 
-.cancel_button {
-  @apply rounded-lg bg-neutral-500 px-4 py-2 text-sm font-medium text-white cursor-pointer hover:bg-neutral-300 transition
+.bgPrimary {
+  @apply bg-blue-500
 }
+.bgPrimary.bgHover {
+  @apply hover:bg-blue-600 shadow-md hover:shadow-sm
+}
+
+.bgDestructive {
+  @apply bg-red-600
+}
+.bgDestructive.bgHover {
+  @apply hover:bg-red-700 shadow-md hover:shadow-sm
+}
+
+.bgCancel {
+  @apply bg-neutral-500
+}
+
+.bgCancel.bgHover {
+  @apply hover:bg-neutral-700
+}
+
+.button {
+  @apply rounded-lg  px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer transition
+}
+
 .error_text {
   @apply text-red-500 text-xs
 }

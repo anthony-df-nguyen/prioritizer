@@ -85,6 +85,7 @@ declare global {
       db: {
         exportBackup: (input: null) => void;
         importBackup: (input: null) => void;
+        delete: (input: null) => void;
       };
 
       ping: () => Promise<string>;

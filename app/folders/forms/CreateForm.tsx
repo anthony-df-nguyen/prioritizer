@@ -94,10 +94,10 @@ export function CreateProjectForm({
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3">
-          <button className="cancel_button" onClick={onCancel}>
+          <button className="button bgCancel bgHover" onClick={onCancel}>
             Cancel
           </button>
-          <button type="submit" disabled={!canSubmit} className="submit_button">
+          <button type="submit" disabled={!canSubmit} className="button bgPrimary bgHover">
             {submitting ? "Creating…" : "Create Folder"}
           </button>
         </div>

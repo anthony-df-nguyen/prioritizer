@@ -110,7 +110,7 @@ export function Select<T>({
         </p>
       )}
 
-      <div className="mt-2 grid grid-cols-1">
+      <div className="grid grid-cols-1">
         <Listbox
           value={value}
           defaultValue={defaultValue}
